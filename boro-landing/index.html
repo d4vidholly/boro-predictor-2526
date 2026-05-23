@@ -4,484 +4,659 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Join 24 Boro fans in the ultimate season-long prediction league. Predict every 2025/26 Championship fixture and compete for cash prizes.">
-  <title>Boro Predictor 25/26 — Register Interest</title>
+  <title>Boro Predictor 25/26</title>
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background-color: #8a1014;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    :root {
+      --red:       #C8102E;
+      --red-dark:  #8A0F1F;
+      --black:     #0C0C0C;
+      --gold:      #FFB400;
+      --white:     #FFFFFF;
+      --off-white: #F7F5F2;
+      --gray:      #ECEAE7;
     }
 
-    /* ── NAVBAR ── */
-    .navbar {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      background-color: #DE1B22;
-      padding: 12px 20px;
-      height: 64px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    body {
+      font-family: 'Barlow', system-ui, sans-serif;
+      background: var(--red);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    .logo { max-height: 36px; display: block; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+      padding: 0 24px;
+    }
+    .nav img { height: 30px; display: block; }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-link {
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--gold); }
 
     /* ── HERO ── */
     .hero {
+      position: relative;
+      background: var(--red);
+      overflow: hidden;
+      padding: 5rem 1.5rem 7rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 4rem 1.5rem 3rem;
     }
 
-    .spots-badge {
-      display: inline-block;
-      background-color: rgba(0,0,0,0.35);
-      color: rgba(255,255,255,0.85);
-      font-size: 0.72rem;
+    /* Ghosted season marker */
+    .hero-bg-text {
+      position: absolute;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(140px, 28vw, 300px);
+      color: rgba(255,255,255,0.035);
+      letter-spacing: -0.04em;
+      right: -1%;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      line-height: 1;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      width: 100%;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--black);
+      color: var(--gold);
+      font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      padding: 6px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.15);
-      margin-bottom: 2rem;
+      padding: 5px 14px 5px 10px;
+      border-radius: 4px;
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.5s ease both;
+    }
+    .eyebrow-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
     }
 
     .hero-title {
-      font-size: clamp(2.2rem, 9vw, 4rem);
-      font-weight: 800;
-      line-height: 1.08;
-      margin-bottom: 1.25rem;
-      max-width: 700px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.8rem, 11vw, 7rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.5s 0.1s ease both;
     }
-    .hero-title span { color: #ffcc00; }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
 
     .hero-sub {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: rgba(255,255,255,0.78);
-      line-height: 1.65;
-      max-width: 500px;
-      margin-bottom: 2.75rem;
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      color: rgba(255,255,255,0.72);
+      line-height: 1.7;
+      max-width: 460px;
+      margin: 0 auto 2.75rem;
+      font-weight: 400;
+      animation: fadeUp 0.5s 0.2s ease both;
     }
 
-    /* ── EMAIL FORM ── */
-    .form-wrap { width: 100%; max-width: 440px; }
+    /* ── FORM ── */
+    .form-wrap { width: 100%; max-width: 420px; animation: fadeUp 0.5s 0.3s ease both; }
 
     .form-row {
       display: flex;
-      border-radius: 8px;
+      border-radius: 6px;
       overflow: hidden;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
     }
     .form-row input[type="email"] {
       flex: 1;
+      min-width: 0;
       padding: 1rem 1.1rem;
       font-size: 1rem;
-      font-family: inherit;
+      font-family: 'Barlow', sans-serif;
       border: none;
       outline: none;
-      background: #fff;
-      color: #111;
+      background: var(--white);
+      color: var(--black);
     }
-    .form-row input::placeholder { color: #aaa; }
+    .form-row input::placeholder { color: #bbb; }
     .form-row button {
       padding: 1rem 1.4rem;
-      background-color: #1a1a1a;
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 700;
-      font-family: inherit;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
       border: none;
       cursor: pointer;
       white-space: nowrap;
-      transition: background-color 0.2s;
+      transition: background 0.15s, transform 0.1s;
     }
-    .form-row button:hover { background-color: #333; }
-    .form-row button:disabled { background-color: #555; cursor: default; }
+    .form-row button:hover { background: #ffc433; }
+    .form-row button:active { transform: scale(0.98); }
+    .form-row button:disabled { background: #bbb; color: #888; cursor: default; }
 
-    .form-note {
-      font-size: 0.78rem;
+    .form-note { font-size: 0.74rem; color: rgba(255,255,255,0.38); margin-top: 0.75rem; text-align: left; }
+    .try-link {
+      display: inline-block;
+      margin-top: 0.9rem;
+      font-size: 0.8rem;
       color: rgba(255,255,255,0.45);
-      margin-top: 0.85rem;
+      text-decoration: none;
+      transition: color 0.15s;
     }
-    .error-msg { display: none; color: #ffcc00; font-size: 0.82rem; margin-top: 0.6rem; }
+    .try-link:hover { color: rgba(255,255,255,0.85); }
+    .error-msg  { display: none; color: var(--gold); font-size: 0.8rem; margin-top: 0.5rem; text-align: left; }
     .success-msg {
       display: none;
-      background: rgba(0,0,0,0.25);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 8px;
-      padding: 1rem 1.5rem;
-      font-size: 0.95rem;
-      line-height: 1.5;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
       text-align: center;
+      backdrop-filter: blur(4px);
     }
-    .success-msg strong { display: block; font-size: 1.05rem; margin-bottom: 0.2rem; }
+    .success-msg strong {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
 
-    /* ── SECTION DIVIDER ── */
-    .section-divider {
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(255,255,255,0.12), transparent);
+    /* ── SKEW BREAK (red → off-white) ── */
+    .skew-break {
+      position: relative;
+      height: 70px;
+      overflow: hidden;
+      background: var(--red);
+    }
+    .skew-break::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 100%;
+      background: var(--off-white);
+      clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);
     }
 
     /* ── HOW IT WORKS ── */
     .how-section {
-      padding: 4rem 1.5rem;
-      max-width: 960px;
-      margin: 0 auto;
-      width: 100%;
+      background: var(--off-white);
+      color: var(--black);
+      padding: 1rem 1.5rem 5rem;
     }
 
-    .section-label {
+    .section-header {
       text-align: center;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
       margin-bottom: 3rem;
+    }
+    .section-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      text-transform: uppercase;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      line-height: 1;
     }
 
     .steps {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
+      gap: 1.25rem;
+      max-width: 960px;
+      margin: 0 auto;
     }
 
     .step-card {
-      background: rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
+      background: var(--white);
+      border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05), 0 8px 32px rgba(0,0,0,0.04);
       display: flex;
       flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1), 0 16px 48px rgba(0,0,0,0.07);
     }
 
-    /* Visual mockup area */
     .step-visual {
-      background: rgba(0,0,0,0.25);
-      padding: 1.5rem 1.25rem 1rem;
-      min-height: 170px;
+      background: var(--gray);
+      padding: 2rem 1.5rem 1.75rem;
+      min-height: 190px;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+    }
+    .step-visual::before {
+      content: attr(data-num);
+      position: absolute;
+      top: 6px; right: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 4.5rem;
+      color: rgba(0,0,0,0.05);
+      line-height: 1;
+      pointer-events: none;
     }
 
-    /* Step 1 — prediction card mockup */
+    /* Prediction card mock */
     .mock-card {
-      background: #ebebeb;
-      border-radius: 8px;
-      padding: 0.85rem 1rem;
+      background: var(--white);
+      border-radius: 10px;
+      border-top: 3px solid var(--red);
+      padding: 0.9rem 1rem;
       width: 100%;
-      max-width: 240px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      max-width: 210px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .mock-matchday {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--red);
+      margin-bottom: 0.7rem;
     }
     .mock-match {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.6rem;
-    }
-    .mock-team-name { font-size: 0.75rem; font-weight: 700; color: #111; font-style: italic; flex: 1; }
-    .mock-score-ctrl {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .mock-btn {
-      width: 24px; height: 24px;
-      background: rgba(0,0,0,0.08);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.9rem; font-weight: 700; color: #333;
-    }
-    .mock-score { font-size: 1.2rem; font-weight: 800; color: #111; width: 20px; text-align: center; }
-    .mock-badge {
-      display: inline-block;
-      font-size: 0.6rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      background: #DE1B22;
-      color: white;
-      padding: 2px 8px;
-      border-radius: 999px;
+      gap: 6px;
       margin-bottom: 0.5rem;
     }
-    .mock-card.win { background: #d4edda; }
+    .mock-team { font-size: 0.72rem; font-weight: 600; color: #111; flex: 1; font-family: 'Barlow', sans-serif; }
+    .mock-score-ctrl { display: flex; align-items: center; gap: 4px; }
+    .mock-btn {
+      width: 20px; height: 20px;
+      border-radius: 4px;
+      background: #f0f0f0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: #666;
+    }
+    .mock-score {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem; font-weight: 900; color: #111;
+      width: 20px; text-align: center;
+    }
+    .mock-win-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: #dff0e6; color: #1a7a3d;
+      padding: 2px 8px; border-radius: 3px;
+      display: inline-block; margin-top: 0.25rem;
+    }
 
-    /* Step 2 — mini table mockup */
+    /* Ladder table mock */
     .mock-table {
-      width: 100%;
-      max-width: 240px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-      border-radius: 8px;
-      overflow: hidden;
-      font-size: 0.72rem;
+      width: 100%; max-width: 225px;
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      font-size: 0.67rem;
     }
-    .mock-table-head {
-      background: #1a1a1a;
-      color: rgba(255,255,255,0.6);
+    .mock-thead {
+      background: var(--black);
+      color: rgba(255,255,255,0.5);
       display: grid;
-      grid-template-columns: 20px 1fr 28px 28px 32px;
-      padding: 5px 8px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      gap: 4px;
+      grid-template-columns: 18px 1fr 26px 26px 30px;
+      padding: 5px 8px; gap: 4px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
     }
-    .mock-table-row {
-      background: #fff;
+    .mock-trow {
+      background: var(--white);
       color: #111;
       display: grid;
-      grid-template-columns: 20px 1fr 28px 28px 32px;
-      padding: 6px 8px;
-      border-top: 1px solid #eee;
+      grid-template-columns: 18px 1fr 26px 26px 30px;
+      padding: 6px 8px; gap: 4px;
+      border-top: 1px solid #f0f0f0;
       align-items: center;
-      gap: 4px;
     }
-    .mock-table-row.me-row { background: #e8eef8; border-left: 3px solid #1a1a1a; }
-    .mock-rank { font-weight: 700; color: #999; font-size: 0.65rem; }
-    .mock-rank.gold { color: #b8860b; }
-    .mock-pname { font-weight: 700; font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .mock-num { text-align: right; font-variant-numeric: tabular-nums; }
-    .mock-pts { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .mock-trow.me { background: #fff8e6; border-left: 3px solid var(--gold); }
+    .mock-r { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: #ccc; font-size: 0.64rem; }
+    .mock-r.g { color: #c9a000; }
+    .mock-n { font-weight: 600; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mock-v { text-align: right; font-variant-numeric: tabular-nums; }
+    .mock-p { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
 
-    /* Step 3 — prize mockup */
-    .mock-prize {
-      text-align: center;
-      max-width: 240px;
+    /* Prize mock */
+    .mock-prize { text-align: center; }
+    .prize-icon {
+      font-size: 3.5rem; line-height: 1; margin-bottom: 0.5rem;
+      display: block;
+      animation: float 3s ease-in-out infinite;
     }
-    .prize-trophy {
-      font-size: 4rem;
-      margin-bottom: 0.5rem;
-      line-height: 1;
+    .prize-lbl {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: #999; margin-bottom: 0.3rem;
     }
-    .prize-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 0.4rem;
+    .prize-amt {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.25rem; font-weight: 900;
+      color: var(--red); text-transform: uppercase;
+      letter-spacing: -0.02em; line-height: 1;
     }
-    .prize-amount {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #ffcc00;
-      line-height: 1;
-    }
-    .prize-sub {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.5);
-      margin-top: 0.4rem;
-    }
+    .prize-sub { font-size: 0.7rem; color: #aaa; margin-top: 0.35rem; }
 
-    /* Step text area */
-    .step-body { padding: 1.25rem 1.25rem 1.5rem; }
-    .step-num-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 0.4rem;
+    /* Step text */
+    .step-body { padding: 1.4rem; border-top: 1px solid #f2f2f2; flex: 1; }
+    .step-num-lbl {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.64rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 0.3rem;
     }
-    .step-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem; }
-    .step-desc  { font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.55; }
+    .step-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.3rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: -0.01em;
+      color: var(--black); margin-bottom: 0.5rem; line-height: 1.1;
+    }
+    .step-desc { font-size: 0.84rem; color: #666; line-height: 1.6; }
+
+    /* ── SKEW BREAK (off-white → black) ── */
+    .skew-break-dark {
+      position: relative;
+      height: 70px;
+      overflow: hidden;
+      background: var(--off-white);
+    }
+    .skew-break-dark::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0; height: 100%;
+      background: var(--black);
+      clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);
+    }
 
     /* ── BOTTOM CTA ── */
     .bottom-cta {
-      background: rgba(0,0,0,0.2);
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding: 4rem 1.5rem;
+      background: var(--black);
+      padding: 5rem 1.5rem 5.5rem;
       text-align: center;
     }
-    .bottom-cta h2 {
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      font-weight: 800;
-      margin-bottom: 0.75rem;
+    .cta-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.75rem, 8vw, 5rem);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 0.92;
+      margin-bottom: 0.9rem;
     }
-    .bottom-cta p {
-      color: rgba(255,255,255,0.65);
-      margin-bottom: 2rem;
-      font-size: 0.95rem;
-    }
+    .cta-title span { color: var(--red); }
+    .cta-sub { font-size: 0.95rem; color: rgba(255,255,255,0.45); margin-bottom: 2.5rem; }
+    .bottom-cta .form-wrap { margin: 0 auto; }
+    .bottom-cta .form-row button { background: var(--red); color: var(--white); }
+    .bottom-cta .form-row button:hover { background: #e0122a; }
 
     /* ── FOOTER ── */
     footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.06);
       text-align: center;
       padding: 1.5rem 1rem;
-      border-top: 1px solid rgba(255,255,255,0.06);
     }
-    .dhd-logo { max-height: 26px; opacity: 0.4; transition: opacity 0.2s; }
-    .dhd-logo:hover { opacity: 0.7; }
-    footer p { font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 0.5rem; }
+    .dhd-logo { max-height: 24px; opacity: 0.3; transition: opacity 0.2s; }
+    .dhd-logo:hover { opacity: 0.65; }
+    footer p { font-size: 0.7rem; color: rgba(255,255,255,0.22); margin-top: 0.5rem; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.75); }
+    }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 480px) {
+    @media (max-width: 520px) {
       .form-row { flex-direction: column; overflow: visible; }
-      .form-row input { border-radius: 8px; margin-bottom: 0.5rem; }
-      .form-row button { border-radius: 8px; width: 100%; }
+      .form-row input  { border-radius: 6px; margin-bottom: 0.5rem; }
+      .form-row button { border-radius: 6px; width: 100%; padding: 1rem; }
       .steps { grid-template-columns: 1fr; }
+      .hero { padding: 4rem 1.25rem 6rem; }
     }
   </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <div></div>
-    <div>
-      <img src="../assets/BoroPredictor.svg" alt="Boro Predictor" class="logo">
+  <!-- NAV -->
+  <nav class="nav">
+    <img src="../assets/BoroPredictor.svg" alt="Boro Predictor">
+    <div class="nav-links">
+      <a class="nav-link" href="../boro-predictor/">Predictor</a>
+      <a class="nav-link" href="../boro-ladder/">Ladder</a>
     </div>
-    <div></div>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="spots-badge">24 spots &mdash; season-long prediction league</div>
+    <div class="hero-bg-text" aria-hidden="true">25/26</div>
+    <div class="hero-inner">
 
-    <h1 class="hero-title">
-      The ultimate<br><span>Boro prediction</span><br>league.
-    </h1>
-
-    <p class="hero-sub">
-      Join a community of 24 Boro fans competing to call every result of the 2025/26 Championship season. Lock in your predictions before a ball is kicked, follow the scores all season long, and win cash prizes when the final whistle blows.
-    </p>
-
-    <div class="form-wrap">
-      <form class="form-row" id="signup-form" onsubmit="handleSubmit(event)">
-        <input type="email" id="email-input" placeholder="your@email.com" required autocomplete="email">
-        <button type="submit" id="submit-btn">Register interest</button>
-      </form>
-      <p class="form-note">No spam. We'll email you when places open up.</p>
-      <p class="error-msg" id="error-msg"></p>
-      <div class="success-msg" id="success-msg">
-        <strong>You're on the list 🎯</strong>
-        We'll be in touch when places open up.
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        24 spots &mdash; season-long prediction league
       </div>
+
+      <h1 class="hero-title">
+        Think you<br>know <em>Boro?</em>
+      </h1>
+
+      <p class="hero-sub">
+        Join 24 fans competing to call every result of the 2025/26 Championship season. Lock your predictions before a ball is kicked, follow the table all season long, and win cash prizes in May.
+      </p>
+
+      <div class="form-wrap">
+        <form class="form-row" id="signup-form" onsubmit="handleSubmit(event)">
+          <input type="email" id="email-input" placeholder="your@email.com" required autocomplete="email">
+          <button type="submit" id="submit-btn">Register interest</button>
+        </form>
+        <p class="form-note">No spam. We'll email you when places open up.</p>
+        <p class="error-msg" id="error-msg"></p>
+        <a class="try-link" href="../boro-predictor/">Try the solo predictor →</a>
+        <div class="success-msg" id="success-msg">
+          <strong>You're on the list 🎯</strong>
+          We'll be in touch when places open up.
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <div class="section-divider"></div>
+  <!-- RED → OFF-WHITE SKEW -->
+  <div class="skew-break" aria-hidden="true"></div>
 
   <!-- HOW IT WORKS -->
   <section class="how-section">
-    <p class="section-label">How it works</p>
+    <div class="section-header">
+      <p class="section-eyebrow">How it works</p>
+      <h2 class="section-title">Three simple steps</h2>
+    </div>
 
     <div class="steps">
 
-      <!-- Step 1: Predict -->
+      <!-- Step 1 -->
       <div class="step-card">
-        <div class="step-visual">
-          <div class="mock-card win">
-            <div class="mock-badge">Aug 9 · Home</div>
+        <div class="step-visual" data-num="01">
+          <div class="mock-card">
+            <div class="mock-matchday">Matchday 1 &middot; Aug 9 &middot; Home</div>
             <div class="mock-match">
-              <div class="mock-team-name">Middlesbrough</div>
+              <span class="mock-team">Middlesbrough</span>
               <div class="mock-score-ctrl">
                 <div class="mock-btn">−</div>
                 <div class="mock-score">2</div>
                 <div class="mock-btn">+</div>
               </div>
             </div>
-            <div class="mock-match">
-              <div class="mock-team-name">Swansea City</div>
+            <div class="mock-match" style="margin-bottom:0.45rem">
+              <span class="mock-team">Swansea City</span>
               <div class="mock-score-ctrl">
                 <div class="mock-btn">−</div>
                 <div class="mock-score">0</div>
                 <div class="mock-btn">+</div>
               </div>
             </div>
+            <span class="mock-win-tag">Predicted win ✓</span>
           </div>
         </div>
         <div class="step-body">
-          <div class="step-num-label">Step 1</div>
-          <div class="step-title">Predict every Boro result</div>
-          <p class="step-desc">Before the season starts, lock in a scoreline for all 46 Championship fixtures. Home wins, away upsets, thumping defeats — call the lot.</p>
+          <div class="step-num-lbl">Step 01</div>
+          <div class="step-title">Predict every result</div>
+          <p class="step-desc">Lock in a scoreline for all 46 Championship fixtures before the season starts. Home wins, away upsets, heavy defeats — call the lot.</p>
         </div>
       </div>
 
-      <!-- Step 2: Follow along -->
+      <!-- Step 2 -->
       <div class="step-card">
-        <div class="step-visual">
+        <div class="step-visual" data-num="02">
           <div class="mock-table">
-            <div class="mock-table-head">
-              <span>#</span><span>Player</span><span style="text-align:right">Sc</span><span style="text-align:right">Res</span><span style="text-align:right">Pts</span>
+            <div class="mock-thead">
+              <span>#</span><span>Player</span>
+              <span style="text-align:right">Sc</span>
+              <span style="text-align:right">Res</span>
+              <span style="text-align:right">Pts</span>
             </div>
-            <div class="mock-table-row">
-              <span class="mock-rank gold">1</span><span class="mock-pname">Ayresome Army</span><span class="mock-num">3</span><span class="mock-num">8</span><span class="mock-pts">23</span>
+            <div class="mock-trow">
+              <span class="mock-r g">1</span><span class="mock-n">Ayresome Army</span>
+              <span class="mock-v">3</span><span class="mock-v">8</span><span class="mock-p">23</span>
             </div>
-            <div class="mock-table-row">
-              <span class="mock-rank gold">2</span><span class="mock-pname">Smoggy Fc</span><span class="mock-num">2</span><span class="mock-num">7</span><span class="mock-pts">19</span>
+            <div class="mock-trow">
+              <span class="mock-r">2</span><span class="mock-n">Smoggy FC</span>
+              <span class="mock-v">2</span><span class="mock-v">7</span><span class="mock-p">19</span>
             </div>
-            <div class="mock-table-row me-row">
-              <span class="mock-rank">3</span><span class="mock-pname">Riverside Reds</span><span class="mock-num">2</span><span class="mock-num">6</span><span class="mock-pts">17</span>
+            <div class="mock-trow me">
+              <span class="mock-r">3</span><span class="mock-n">Riverside Reds</span>
+              <span class="mock-v">2</span><span class="mock-v">6</span><span class="mock-p">17</span>
             </div>
-            <div class="mock-table-row">
-              <span class="mock-rank">4</span><span class="mock-pname">Carrick's XI</span><span class="mock-num">1</span><span class="mock-num">6</span><span class="mock-pts">14</span>
+            <div class="mock-trow">
+              <span class="mock-r">4</span><span class="mock-n">Carrick's XI</span>
+              <span class="mock-v">1</span><span class="mock-v">6</span><span class="mock-p">14</span>
             </div>
-            <div class="mock-table-row">
-              <span class="mock-rank">5</span><span class="mock-pname">Parmo FC</span><span class="mock-num">1</span><span class="mock-num">5</span><span class="mock-pts">12</span>
+            <div class="mock-trow">
+              <span class="mock-r">5</span><span class="mock-n">Parmo FC</span>
+              <span class="mock-v">1</span><span class="mock-v">5</span><span class="mock-p">12</span>
             </div>
           </div>
         </div>
         <div class="step-body">
-          <div class="step-num-label">Step 2</div>
-          <div class="step-title">Follow along with the table</div>
+          <div class="step-num-lbl">Step 02</div>
+          <div class="step-title">Follow the live table</div>
           <p class="step-desc">Points update after every Boro result. Watch yourself climb — or slide — the 24-player ladder as the season unfolds week by week.</p>
         </div>
       </div>
 
-      <!-- Step 3: Win prizes -->
+      <!-- Step 3 -->
       <div class="step-card">
-        <div class="step-visual">
+        <div class="step-visual" data-num="03">
           <div class="mock-prize">
-            <div class="prize-trophy">🏆</div>
-            <div class="prize-label">Season winner</div>
-            <div class="prize-amount">Cash prize</div>
-            <div class="prize-sub">Awarded at the end of the season</div>
+            <span class="prize-icon">🏆</span>
+            <div class="prize-lbl">Season winner</div>
+            <div class="prize-amt">Cash prize</div>
+            <div class="prize-sub">Confirmed once all 24 spots are filled</div>
           </div>
         </div>
         <div class="step-body">
-          <div class="step-num-label">Step 3</div>
+          <div class="step-num-lbl">Step 03</div>
           <div class="step-title">Win cash prizes</div>
-          <p class="step-desc">Top the table when the final whistle blows at the end of May and you take the prize pot. Prizes confirmed once all 24 spots are filled.</p>
+          <p class="step-desc">Top the table when the final whistle blows at the end of May and you take the pot. Prize amount confirmed once all 24 spots are filled.</p>
         </div>
       </div>
 
     </div>
   </section>
 
-  <div class="section-divider"></div>
+  <!-- OFF-WHITE → BLACK SKEW -->
+  <div class="skew-break-dark" aria-hidden="true"></div>
 
   <!-- BOTTOM CTA -->
   <section class="bottom-cta">
-    <h2>Ready to prove you know Boro?</h2>
-    <p>24 spots. One season. Register your interest now.</p>
-    <div class="form-wrap" style="margin: 0 auto;">
+    <h2 class="cta-title">Ready to<br><span>prove it?</span></h2>
+    <p class="cta-sub">24 spots. One season. All 46 fixtures.</p>
+    <div class="form-wrap">
       <form class="form-row" id="signup-form-2" onsubmit="handleSubmitBottom(event)">
         <input type="email" id="email-input-2" placeholder="your@email.com" required autocomplete="email">
         <button type="submit" id="submit-btn-2">Register interest</button>
       </form>
-      <div class="success-msg" id="success-msg-2" style="margin-top:0.75rem;">
+      <p class="form-note" style="color:rgba(255,255,255,0.28)">No spam. We'll email you when places open up.</p>
+      <div class="success-msg" id="success-msg-2" style="margin-top:0.75rem">
         <strong>You're on the list 🎯</strong>
         We'll be in touch when places open up.
       </div>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
     <img src="../assets/DHD-logo.png" alt="DHD" class="dhd-logo">
     <p>Boro Predictor 25/26 &mdash; Not affiliated with Middlesbrough FC</p>
@@ -489,16 +664,13 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ── CONFIG ─────────────────────────────────────────────
     const SUPABASE_URL      = 'https://tkaayrdevanrozsbxmlv.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRrYWF5cmRldmFucm96c2J4bWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwMTU2ODksImV4cCI6MjA5NDU5MTY4OX0.bnnFYJgolI5vasGlA74eVTyAQiCUgQsnz5_BbVGBmi0';
-    // ───────────────────────────────────────────────────────
 
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     async function submitEmail(email) {
       const { error } = await sb.from('waitlist').insert([{ email }]);
-      // Treat duplicate as success — don't reveal if address exists
       if (error && error.code !== '23505') throw error;
     }
 
@@ -536,7 +708,10 @@
       } catch (err) {
         btn.disabled = false;
         btn.textContent = 'Register interest';
-        if (errEl) { errEl.textContent = 'Something went wrong — please try again.'; errEl.style.display = 'block'; }
+        if (errEl) {
+          errEl.textContent = 'Something went wrong — please try again.';
+          errEl.style.display = 'block';
+        }
       }
     }
   </script>
