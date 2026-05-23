@@ -53,20 +53,20 @@ const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
 ## 5. Configure magic link redirect URL
 
 1. In Supabase go to **Authentication → URL Configuration**
-2. Add your GitHub Pages URL to **Redirect URLs**, e.g.:
-   `https://yourusername.github.io/boro-predictor/boro-ladder/`
-3. Set **Site URL** to your root GitHub Pages URL
+2. Set **Site URL** to:
+   `https://d4vidholly.github.io/Boro-Predictor-2526/`
+3. Under **Redirect URLs**, add:
+   `https://d4vidholly.github.io/Boro-Predictor-2526/boro-ladder/`
+4. Save
 
 ---
 
-## 6. Push to GitHub Pages
+## 6. GitHub Pages (already live)
 
-1. Push the project to a GitHub repo
-2. In the repo settings, enable **Pages** → deploy from `main` branch, root `/`
-3. Your landing page will be at:
-   `https://yourusername.github.io/boro-predictor/boro-landing/`
-4. Your ladder will be at:
-   `https://yourusername.github.io/boro-predictor/boro-ladder/`
+- Repo: `https://github.com/d4vidholly/Boro-Predictor-2526`
+- Landing page: `https://d4vidholly.github.io/Boro-Predictor-2526/boro-landing/`
+- Predictor: `https://d4vidholly.github.io/Boro-Predictor-2526/boro-predictor/`
+- Ladder: `https://d4vidholly.github.io/Boro-Predictor-2526/boro-ladder/`
 
 ---
 
