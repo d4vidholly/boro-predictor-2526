@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Predict Middlesbrough FC's 2025/26 Championship results, track your score predictions match-by-match, and see how Boro might finish the season.">
+  <title>Boro Predictor 25/26</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg?v=2">
+</head>
+<body>
+
+<nav class="navbar">
+  <div></div>
+  <div class="nav-logo">
+    <img src="../assets/BoroPredictor.svg" alt="Boro Predictor logo" class="logo">
+  </div>
+  <div class="help-icon" onclick="toggleHelpModal()">
+    <img src="../assets/help.svg" alt="" class="help-button">
+  </div>
+</nav>
+
+<div id="help-modal" class="help-modal">
+  <div class="help-modal-content">
+    <span class="close-button" onclick="toggleHelpModal()">&times;</span>
+    <p>Welcome to the Boro Predictor 2025/26. Guess the score for every Middlesbrough match in the 2025/26 EFL season before the first game kicks and compete to win post season prizes.</p>
+    <h2 style="text-align: center;">How Scoring Works</h2>
+    <p>
+      For each EFL fixture involving Middlesbrough this season you can score a maximum of 4 points from your prediction.
+      <ul>
+        <li>Correct Home Goals: 1 point</li>
+        <li>Correct Away Goals: 1 point</li>
+        <li>Correct Result: 1 point</li>
+        <li>Correct Score: 4 points (maximum)</li>
+      </ul>
+    </p>
+    <p>Download your predictions and attach to your confirmation email. Good luck!</p>
+  </div>
+</div>
+
+<div class="container" id="container">
+  <!-- Matches rendered by JS -->
+</div>
+
+<div class="button-container">
+  <button id="clearScoresBtn" class="report-button">
+    <img src="../assets/clearall.svg" class="img-button" alt="Clear all">
+  </button>
+  <button class="report-button" onclick="calculatePoints()">
+    <img src="../assets/PredictorReport.svg" class="img-button" alt="Report">
+  </button>
+  <button class="report-button" onclick="submitPredictions()">
+    <img src="../assets/Download.svg" class="img-button" alt="Download">
+  </button>
+</div>
+
+<div id="points-result" class="points-display"></div>
+
+<div id="report-modal" class="modal">
+  <div class="modal-content newspaper">
+    <button class="close-button" onclick="toggleReportModal()">&times;</button>
+
+    <header class="masthead">
+      <div class="paper-banner">
+        <h1 class="paper-title">The Boro Gazette</h1>
+        <p class="paper-date">May 2026</p>
+      </div>
+    </header>
+
+    <div class="paper-scroll">
+      <section class="paper-body">
+        <article class="paper-story">
+          <h3 class="article-title">2025/26 Season Review:</h3>
+          <h2 id="summary" class="headline"></h2>
+          <p class="article-info">By John Craigs - Chief Sports Writer</p>
+          <p id="summary-details" class="story-text"></p>
+        </article>
+
+        <figure class="paper-figure">
+          <div class="paper-image-frame">
+            <img id="summary-img" src="../assets/boro-paper.webp" alt="">
+          </div>
+          <figcaption class="paper-caption" id="summary-caption"></figcaption>
+        </figure>
+      </section>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<footer>
+  <img class="dhd-logo" src="../assets/DHD-logo.png" alt="DHD Logo">
+  <p class="copy">David Holly Design - 2025</p>
+</footer>
+
+<script>
+  const teams = {
+    "Middlesbrough": "../assets/badges/middlesbrough.svg",
+    "Swansea City": "../assets/badges/swansea.svg",
+    "Derby County": "../assets/badges/derby.svg",
+    "Portsmouth": "../assets/badges/portsmouth.svg",
+    "Preston North End": "../assets/badges/preston.svg",
+    "Stoke City": "../assets/badges/stokecity.svg",
+    "West Brom": "../assets/badges/westbrom.svg",
+    "Watford": "../assets/badges/watford.svg",
+    "Bristol City": "../assets/badges/bristolcity.svg",
+    "Sheffield United": "../assets/badges/sheffieldutd.svg",
+    "Norwich City": "../assets/badges/norwich.svg",
+    "Coventry City": "../assets/badges/coventry.svg",
+    "QPR": "../assets/badges/qpr.svg",
+    "Millwall": "../assets/badges/millwall.svg",
+    "Oxford United": "../assets/badges/oxfordunited.svg",
+    "Blackburn Rovers": "../assets/badges/blackburn.svg",
+    "Hull City": "../assets/badges/hull.svg",
+    "Birmingham City": "../assets/badges/birmingham.svg",
+    "Leeds United": "../assets/badges/leeds.svg",
+    "Southampton": "../assets/badges/southampton.svg",
+    "Leicester City": "../assets/badges/leicestercity.svg",
+    "Wrexham": "../assets/badges/wrexham.svg",
+    "Sheffield Wednesday": "../assets/badges/wednesday.svg",
+    "Ipswich Town": "../assets/badges/ipswich.svg",
+    "Charlton Athletic": "../assets/badges/charlton.svg"
+  };
+
+  const fixtures = [
+    { home: "Middlesbrough", away: "Swansea City", date: "9/8/25" },
+    { home: "Millwall", away: "Middlesbrough", date: "16/8/25" },
+    { home: "Norwich City", away: "Middlesbrough", date: "23/8/25" },
+    { home: "Middlesbrough", away: "Sheffield United", date: "30/8/25" },
+    { home: "Preston North End", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "West Brom", date: "30/8/25" },
+    { home: "Southampton", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Stoke City", date: "30/8/25" },
+    { home: "Portsmouth", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Ipswich Town", date: "30/8/25" },
+    { home: "Sheffield Wednesday", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Wrexham", date: "30/8/25" },
+    { home: "Watford", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Leicester City", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Birmingham City", date: "30/8/25" },
+    { home: "Oxford United", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Coventry City", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Derby County", date: "30/8/25" },
+    { home: "Hull City", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Charlton Athletic", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "QPR", date: "30/8/25" },
+    { home: "Bristol City", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Blackburn Rovers", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Hull City", date: "30/8/25" },
+    { home: "Derby County", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Southampton", date: "30/8/25" },
+    { home: "West Brom", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Stoke City", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Preston North End", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Norwich City", date: "30/8/25" },
+    { home: "Sheffield United", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Coventry City", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Oxford United", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Leicester City", date: "30/8/25" },
+    { home: "Birmingham City", away: "Middlesbrough", date: "30/8/25" },
+    { home: "QPR", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Charlton Athletic", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Bristol City", date: "30/8/25" },
+    { home: "Blackburn Rovers", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Millwall", date: "30/8/25" },
+    { home: "Swansea City", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Portsmouth", date: "30/8/25" },
+    { home: "Ipswich Town", away: "Middlesbrough", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Sheffield Wednesday", date: "30/8/25" },
+    { home: "Middlesbrough", away: "Watford", date: "30/8/25" },
+    { home: "Wrexham", away: "Middlesbrough", date: "30/8/25" }
+  ];
+
+  const scores = Array.from({ length: fixtures.length }, () => ({ home: 0, away: 0 }));
+
+  // ---------- Storage ----------
+
+  function saveScoresToLocal() {
+    localStorage.setItem('boroScores', JSON.stringify(scores));
+  }
+
+  function loadScoresFromLocal() {
+    const saved = localStorage.getItem('boroScores');
+    if (!saved) return;
+    const parsed = JSON.parse(saved);
+    for (let i = 0; i < parsed.length; i++) {
+      scores[i] = parsed[i];
+    }
+  }
+
+  // ---------- Rendering ----------
+
+  function createMatch(index) {
+    const fixture = fixtures[index];
+    const homeBadge = teams[fixture.home];
+    const awayBadge = teams[fixture.away];
+
+    return `
+      <div class="predictor" id="match-${index}">
+        <div class="matchday-title">Matchday ${index + 1}<div class="date">${fixture.date}</div></div>
+        <div class="team">
+          <img src="${homeBadge}" alt="${fixture.home} Badge">
+          <div class="team-info">
+            <div class="team-name">${fixture.home}</div>
+          </div>
+          <div class="score-control">
+            <button class="change-score" onclick="changeScore(${index}, 'home', -1)">-</button>
+            <div id="home-score-${index}" class="score">0</div>
+            <button class="change-score" onclick="changeScore(${index}, 'home', 1)">+</button>
+          </div>
+        </div>
+        <div class="team">
+          <img src="${awayBadge}" alt="${fixture.away} Badge">
+          <div class="team-info">
+            <div class="team-name">${fixture.away}</div>
+          </div>
+          <div class="score-control">
+            <button class="change-score" onclick="changeScore(${index}, 'away', -1)">-</button>
+            <div id="away-score-${index}" class="score">0</div>
+            <button class="change-score" onclick="changeScore(${index}, 'away', 1)">+</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderFixtures() {
+    const container = document.getElementById('container');
+    container.innerHTML = '';
+
+    const monthDividers = {
+      0: 'August', 4: 'September', 8: 'October', 12: 'November',
+      18: 'December', 24: 'January', 30: 'February', 35: 'March',
+      39: 'April', 45: 'May'
+    };
+
+    for (let i = 0; i < fixtures.length; i++) {
+      if (monthDividers[i]) {
+        container.innerHTML += `<div class="month-divider">${monthDividers[i]}</div>`;
+      }
+      container.innerHTML += createMatch(i);
+    }
+  }
+
+  function restoreScoreDisplay() {
+    for (let i = 0; i < scores.length; i++) {
+      const homeEl = document.getElementById(`home-score-${i}`);
+      const awayEl = document.getElementById(`away-score-${i}`);
+      if (homeEl) homeEl.textContent = scores[i].home;
+      if (awayEl) awayEl.textContent = scores[i].away;
+      updateFixtureColor(i);
+    }
+  }
+
+  // ---------- Score logic ----------
+
+  function changeScore(index, team, delta) {
+    scores[index][team] = Math.min(9, Math.max(0, scores[index][team] + delta));
+    document.getElementById(`${team}-score-${index}`).textContent = scores[index][team];
+    updateFixtureColor(index);
+    saveScoresToLocal();
+  }
+
+  function updateFixtureColor(index) {
+    const fixture = fixtures[index];
+    const homeScore = scores[index].home;
+    const awayScore = scores[index].away;
+    const predictor = document.getElementById(`match-${index}`);
+    predictor.classList.remove('win', 'loss');
+
+    const boroHome = fixture.home === 'Middlesbrough';
+    const boroAway = fixture.away === 'Middlesbrough';
+
+    if (boroHome && homeScore > awayScore) predictor.classList.add('win');
+    else if (boroHome && homeScore < awayScore) predictor.classList.add('loss');
+    else if (boroAway && awayScore > homeScore) predictor.classList.add('win');
+    else if (boroAway && awayScore < homeScore) predictor.classList.add('loss');
+  }
+
+  // ---------- Clear ----------
+
+  function setupClearButton() {
+    const clearBtn = document.getElementById('clearScoresBtn');
+    if (!clearBtn) return;
+
+    clearBtn.addEventListener('click', () => {
+      if (!confirm('Are you sure you want to clear all predictions?')) return;
+
+      localStorage.removeItem('boroScores');
+
+      for (let i = 0; i < scores.length; i++) {
+        scores[i].home = 0;
+        scores[i].away = 0;
+      }
+
+      restoreScoreDisplay();
+      alert('All predictions have been cleared.');
+    });
+  }
+
+  // ---------- Download ----------
+
+  function submitPredictions() {
+    const data = [[
+      'Matchday', 'Home Team', 'Away Team',
+      'Home Goals Prediction', '-', 'Away Goals Prediction',
+      'Actual Score', 'Points'
+    ]];
+
+    fixtures.forEach((fixture, i) => {
+      data.push([
+        `Matchday ${i + 1}`,
+        fixture.home, fixture.away,
+        scores[i].home, '-', scores[i].away,
+        '', ''
+      ]);
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Predictions');
+    XLSX.writeFile(workbook, 'boro_predictions_2025_26.xlsx');
+  }
+
+  // ---------- Report / Gazette ----------
+
+  function calculatePoints() {
+    let wins = 0, draws = 0, losses = 0, goalsFor = 0, goalsAgainst = 0;
+
+    fixtures.forEach((match, i) => {
+      const boroHome = match.home === 'Middlesbrough';
+      const boroAway = match.away === 'Middlesbrough';
+      if (!boroHome && !boroAway) return;
+
+      const boroGoals = boroHome ? scores[i].home : scores[i].away;
+      const oppGoals  = boroHome ? scores[i].away : scores[i].home;
+
+      goalsFor += boroGoals;
+      goalsAgainst += oppGoals;
+
+      if (boroGoals > oppGoals) wins++;
+      else if (boroGoals === oppGoals) draws++;
+      else losses++;
+    });
+
+    const totalPoints = wins * 3 + draws;
+    const goalDiff = goalsFor - goalsAgainst;
+    const gDiffStr = goalDiff >= 0 ? `+${goalDiff}` : `${goalDiff}`;
+
+    let summary, summaryText, summaryCaption, summaryImg;
+
+    if (totalPoints >= 100) {
+      summary = "Brilliant Boro finally 'Smash the League'";
+      summaryText = `What a season it has been on Teesside. Middlesbrough have stormed to the Championship title in breathtaking fashion, accumulating ${totalPoints} points and leaving the rest of the division trailing in their wake. With ${wins} wins, ${draws} draws and a goal difference of ${gDiffStr}, Michael Carrick's side have been simply unstoppable. The Riverside was rocking from August to May, and now — after years of near misses — Boro are back where they belong. The Premier League awaits, and on this form, nobody will fancy playing them.`;
+      summaryCaption = "The Riverside will host top flight football once again";
+      summaryImg = "../assets/boro-paper.webp";
+    } else if (totalPoints >= 75) {
+      summary = "Strong Season for Boro as Promotion Dream Stays Alive";
+      summaryText = `It has been a campaign to be proud of on Teesside. Middlesbrough finished the 2025/26 season with ${totalPoints} points — ${wins} wins, ${draws} draws, a goal difference of ${gDiffStr} — and firmly in contention for a return to the top flight. Carrick's men were consistent, combative and rarely short of a goal. Whether it ends in automatic promotion or the play-offs, the red half of Teesside has genuine reason for optimism. The foundations are there. The belief is there. Boro are knocking loudly on the Premier League door.`;
+      summaryCaption = "Boro fans dared to dream this season — and they had every right to";
+      summaryImg = "../assets/boro-promotion.webp";
+    } else if (totalPoints >= 65) {
+      summary = "Boro End Well and Truly in the Play-Off Mix";
+      summaryText = `A season of promise but also of frustrating inconsistency. Middlesbrough's ${totalPoints} points — built on ${wins} wins and ${draws} draws — was enough to keep them within striking distance of the top six all campaign. The goal difference of ${gDiffStr} tells part of the story: moments of real quality mixed with costly lapses. Come May, Boro are right in the play-off conversation, and at the Riverside there is a growing sense that this group of players are on the cusp of something. One more push could be all it takes.`;
+      summaryCaption = "The play-offs beckon — Boro's date with destiny approaches";
+      summaryImg = "../assets/boro-playoffs.webp";
+    } else if (totalPoints >= 50) {
+      summary = "Inconsistent Boro Make Do with Mid-Table Mediocrity";
+      summaryText = `A season of what-ifs and missed opportunities on Teesside. Middlesbrough's ${totalPoints} points — ${wins} wins, ${draws} draws, goal difference ${gDiffStr} — reflects a campaign that never quite found its rhythm. Too many dropped points at home, too many away days to forget. Carrick will know improvements are needed if Boro are to challenge at the top end of the Championship next term. The squad has quality, but quality alone is not enough. Structure, consistency, and a clinical edge in front of goal are the next priorities.`;
+      summaryCaption = "Mid-table: safe, but not where Boro want to be";
+      summaryImg = "../assets/boro-paper.webp";
+    } else if (totalPoints >= 40) {
+      summary = "A Season to Forget for Sorry Boro";
+      summaryText = `It has been a deeply difficult campaign on Teesside. Middlesbrough's ${totalPoints} points — just ${wins} wins from 46 games, goal difference ${gDiffStr} — left the club looking anxiously over their shoulder for much of the season. The supporters have been patient, but patience has its limits. Questions will be asked in the boardroom this summer. Where did it go wrong? How is it fixed? Wholesale changes may be needed, both on the pitch and in the dugout, if Boro are to avoid another tormenting year like this one.`;
+      summaryCaption = "A season that won't live long in Boro fans' memories";
+      summaryImg = "../assets/boro-relegation.webp";
+    } else {
+      summary = "Nightmare Season Ends in Disbelief for Boro";
+      summaryText = `There are no words. Middlesbrough's 2025/26 campaign has been an unmitigated disaster — ${totalPoints} points, ${wins} wins, a goal difference of ${gDiffStr}. The Riverside, usually a fortress of noise and red, fell eerily quiet as the season wore on. Morale disintegrated. Form collapsed. The club now faces a reckoning. Relegation would be a bitter pill for a club with Boro's ambitions, but the numbers do not lie. This is rock bottom, and the only way is up — though the road back will be long, painful, and uncertain.`;
+      summaryCaption = "Dark days on Teesside — a squad in need of urgent rebuilding";
+      summaryImg = "../assets/boro-disaster.jpg";
+    }
+
+    document.getElementById('summary').textContent = summary;
+    document.getElementById('summary-details').textContent = summaryText;
+    document.getElementById('summary-caption').textContent = summaryCaption;
+    document.getElementById('summary-img').src = summaryImg;
+
+    toggleReportModal();
+  }
+
+  // ---------- Modals ----------
+
+  function toggleHelpModal() {
+    document.getElementById('help-modal').classList.toggle('show');
+  }
+
+  function toggleReportModal() {
+    document.getElementById('report-modal').classList.toggle('show');
+  }
+
+  // ---------- Init (single DOMContentLoaded) ----------
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadScoresFromLocal();
+    renderFixtures();
+    restoreScoreDisplay();
+    setupClearButton();
+  });
+</script>
+
+</body>
+</html>

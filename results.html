@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head><title>Prediction Results</title></head>
+<body>
+  <div id="results-container">Loading...</div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    fetch(`https://script.google.com/macros/s/AKfycbwzbxKztsZW3ly0YMItlKxQInU0LFHkXxUaHOOD6Ke2E54HQSvviOgLg-yCspqHxQjB8A/exec${id}`)
+      .then(res => res.json())
+      .then(predictions => {
+        // Simulate actual results for now
+        const actuals = [
+          { home: 1, away: 2 },
+          { home: 0, away: 0 },
+          { home: 3, away: 1 },
+          // etc...
+        ];
+
+        const container = document.getElementById("results-container");
+        container.innerHTML = "";
+
+        predictions.forEach((pred, i) => {
+          const actual = actuals[i];
+          const html = `
+            <div>
+              <strong>Match ${i + 1}</strong>: 
+              You predicted ${pred.home}-${pred.away} | 
+              Actual: ${actual.home}-${actual.away}
+            </div>
+          `;
+          container.innerHTML += html;
+        });
+      })
+      .catch(err => {
+        document.getElementById("results-container").textContent = "Error loading results.";
+      });
+
+      const scores = JSON.parse(localStorage.getItem("boroPredictions"));
+// Process and display as needed
+  </script>
+</body>
+</html>
