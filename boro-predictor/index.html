@@ -5,22 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Predict Middlesbrough FC's 2025/26 Championship results, track your score predictions match-by-match, and see how Boro might finish the season.">
   <title>Boro Predictor 25/26</title>
-  <link rel="stylesheet" href="../styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg?v=2">
 </head>
 <body>
 
 <nav class="navbar">
-  <div></div>
-  <div class="nav-logo">
-    <img src="../assets/BoroPredictor.svg" alt="Boro Predictor logo" class="logo">
-  </div>
-  <div class="help-icon" onclick="toggleHelpModal()">
-    <img src="../assets/help.svg" alt="" class="help-button">
+  <img src="../assets/BoroPredictor.svg" alt="Boro Predictor logo" class="logo">
+  <div class="nav-links">
+    <a class="nav-link" href="../boro-ladder/">Ladder</a>
+    <button class="help-icon" onclick="toggleHelpModal()" aria-label="Help">
+      <img src="../assets/help.svg" alt="" class="help-button">
+    </button>
   </div>
 </nav>
 

@@ -7,14 +7,12 @@
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/tokens.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background-color: #8a1014;
-      color: #fff;
+      font-family: var(--font-body);
+      background: var(--red-dark);
+      color: var(--white);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -22,43 +20,51 @@
 
     /* ── NAVBAR ── */
     .navbar {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      display: flex;
       align-items: center;
-      background-color: #DE1B22;
-      padding: 12px 20px;
-      height: 64px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      justify-content: space-between;
+      background: var(--black);
+      padding: 0 24px;
+      height: var(--nav-height);
       position: sticky;
       top: 0;
       z-index: 100;
     }
-    .navbar .logo { max-height: 36px; display: block; }
-    .nav-right {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 0.5rem;
+    .logo { height: 30px; display: block; }
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-link {
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.15s;
     }
+    .nav-link:hover { color: var(--gold); }
     .nav-user {
       font-size: 0.78rem;
-      color: rgba(255,255,255,0.8);
+      color: rgba(255,255,255,0.6);
       max-width: 120px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .nav-link {
+    .nav-auth {
+      font-family: var(--font-display);
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       color: rgba(255,255,255,0.7);
       text-decoration: none;
-      background: rgba(255,255,255,0.15);
-      padding: 4px 10px;
+      background: rgba(255,255,255,0.12);
+      padding: 4px 12px;
       border-radius: 999px;
       transition: background 0.2s;
     }
-    .nav-link:hover { background: rgba(255,255,255,0.25); }
+    .nav-auth:hover { background: rgba(255,255,255,0.2); }
 
     /* ── MAIN ── */
     main {
@@ -79,15 +85,26 @@
       gap: 0.75rem;
     }
     .page-title {
-      font-size: 1.4rem;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
       font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
     }
-    .page-title span { color: rgba(255,255,255,0.5); font-weight: 400; font-size: 1rem; }
+    .page-title span {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      color: rgba(255,255,255,0.45);
+    }
 
     .lock-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      font-family: var(--font-display);
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.05em;
@@ -96,7 +113,7 @@
       border-radius: 999px;
     }
     .lock-badge.open   { background: rgba(255,255,255,0.12); color: #7dffb3; }
-    .lock-badge.locked { background: rgba(255,255,255,0.12); color: #ffcc00; }
+    .lock-badge.locked { background: rgba(255,255,255,0.12); color: var(--gold); }
     .lock-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
 
     /* ── STATS BAR ── */
@@ -112,90 +129,57 @@
       padding: 0.85rem 1rem;
       text-align: center;
     }
-    .stat-value { font-size: 1.6rem; font-weight: 800; line-height: 1; }
-    .stat-label { font-size: 0.7rem; color: rgba(255,255,255,0.55); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
 
     /* ── TABLE ── */
-    .table-wrap {
-      background: rgba(0,0,0,0.2);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
-
-    thead {
-      background: rgba(0,0,0,0.3);
-    }
+    .table-wrap { background: rgba(0,0,0,0.2); border-radius: 12px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    thead { background: rgba(0,0,0,0.3); }
     thead th {
       padding: 0.75rem 1rem;
       text-align: left;
-      font-size: 0.7rem;
+      font-family: var(--font-display);
+      font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255,255,255,0.45);
       white-space: nowrap;
     }
     thead th.right { text-align: right; }
-
-    tbody tr {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      transition: background 0.15s;
-    }
+    tbody tr { border-top: 1px solid rgba(255,255,255,0.06); transition: background 0.15s; }
     tbody tr:hover { background: rgba(255,255,255,0.04); }
-
-    /* Current user highlight */
-    tbody tr.me {
-      background: rgba(23, 70, 157, 0.35);
-      border-left: 3px solid #17469D;
-    }
-    tbody tr.me:hover { background: rgba(23, 70, 157, 0.45); }
-
-    td {
-      padding: 0.85rem 1rem;
-      vertical-align: middle;
-    }
+    tbody tr.me { background: rgba(23,70,157,0.3); border-left: 3px solid var(--blue); }
+    tbody tr.me:hover { background: rgba(23,70,157,0.42); }
+    td { padding: 0.85rem 1rem; vertical-align: middle; }
     td.right { text-align: right; }
-
-    /* Rank column */
-    .rank {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: rgba(255,255,255,0.45);
-      width: 36px;
-    }
-    .rank.top3 { color: #ffcc00; }
-
-    /* Player name */
+    .rank { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,0.4); width: 36px; }
+    .rank.top3 { color: var(--gold); }
     .player-name { font-weight: 700; }
-    .team-name   { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
-
-    /* Points (last col) */
-    .points-cell {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    /* Number cells */
+    .team-name   { font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
+    .points-cell { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; }
     .num { font-variant-numeric: tabular-nums; }
 
     /* ── LOADING / EMPTY ── */
-    .state-msg {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: rgba(255,255,255,0.45);
-      font-size: 0.9rem;
-    }
+    .state-msg { text-align: center; padding: 3rem 1rem; color: rgba(255,255,255,0.45); font-size: 0.9rem; }
     .spinner {
       width: 28px; height: 28px;
       border: 3px solid rgba(255,255,255,0.15);
-      border-top-color: #DE1B22;
+      border-top-color: var(--red);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin: 0 auto 1rem;
@@ -213,48 +197,66 @@
       padding: 3rem 1.5rem;
     }
     .auth-screen.visible { display: flex; }
-    .auth-screen h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.75rem; }
-    .auth-screen p  { color: rgba(255,255,255,0.7); max-width: 340px; margin-bottom: 2rem; line-height: 1.6; }
-    .auth-form { display: flex; gap: 0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3); width: 100%; max-width: 380px; }
+    .auth-screen h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .auth-screen p { color: rgba(255,255,255,0.65); max-width: 340px; margin-bottom: 2rem; line-height: 1.6; }
+    .auth-form {
+      display: flex;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 380px;
+    }
     .auth-form input[type="email"] {
-      flex: 1; padding: 0.9rem 1rem; font-size: 1rem; font-family: inherit;
-      border: none; outline: none; background: #fff; color: #111;
+      flex: 1; padding: 0.9rem 1rem; font-size: 1rem; font-family: var(--font-body);
+      border: none; outline: none; background: var(--white); color: var(--black);
     }
-    .auth-form input::placeholder { color: #999; }
+    .auth-form input::placeholder { color: #bbb; }
     .auth-form button {
-      padding: 0.9rem 1.1rem; background-color: #17469D; color: #fff;
-      font-size: 0.9rem; font-weight: 700; font-family: inherit;
-      border: none; cursor: pointer; white-space: nowrap;
+      padding: 0.9rem 1.2rem;
+      background: var(--blue);
+      color: var(--white);
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
     }
-    .auth-form button:hover { background-color: #0f3278; }
-    .auth-note { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-top: 0.75rem; }
-    .auth-success { display: none; background: rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem 1.5rem; }
+    .auth-form button:hover { background: #0f3278; }
+    .auth-note { font-size: 0.74rem; color: rgba(255,255,255,0.38); margin-top: 0.75rem; }
+    .auth-success { display: none; background: rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem 1.5rem; margin-top: 1rem; }
 
     /* ── FOOTER ── */
     footer { text-align: center; padding: 1.5rem 1rem; }
-    .dhd-logo { max-height: 24px; opacity: 0.4; }
-    footer p  { font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 0.5rem; }
+    .dhd-logo { max-height: 24px; opacity: 0.35; transition: opacity 0.2s; }
+    .dhd-logo:hover { opacity: 0.7; }
+    footer p { font-size: 0.7rem; color: rgba(255,255,255,0.25); margin-top: 0.5rem; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 520px) {
-      thead th.hide-mobile,
-      td.hide-mobile { display: none; }
-
-      .stats-bar { grid-template-columns: repeat(3, 1fr); }
-      .stat-value { font-size: 1.3rem; }
+      thead th.hide-mobile, td.hide-mobile { display: none; }
+      .stat-value { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
 
   <nav class="navbar">
-    <div></div>
-    <div class="nav-logo">
-      <img src="../assets/BoroPredictor.svg" alt="Boro Predictor" class="logo">
-    </div>
+    <img src="../assets/BoroPredictor.svg" alt="Boro Predictor" class="logo">
     <div class="nav-right">
+      <a class="nav-link" href="../boro-predictor/">Predictor</a>
       <span class="nav-user" id="nav-user"></span>
-      <a href="#" class="nav-link" id="nav-action" onclick="handleNavAction(event)">Sign in</a>
+      <a href="#" class="nav-auth" id="nav-action" onclick="handleNavAction(event)">Sign in</a>
     </div>
   </nav>
 
