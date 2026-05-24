@@ -44,16 +44,20 @@ body {
   top: var(--nav-height);
   z-index: 99;
   background: var(--red);
-  padding: 0.55rem 1rem;
+  padding: 0.5rem 1rem;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.35rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  justify-content: flex-start;
+  gap: 0.4rem;
   border-bottom: 1px solid rgba(0,0,0,0.18);
 }
+.month-filter::-webkit-scrollbar { display: none; }
 .month-btn {
   font-family: var(--font-display);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -61,13 +65,38 @@ body {
   background: rgba(255,255,255,0.1);
   border: none;
   border-radius: 999px;
-  padding: 0.28rem 0.7rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
+  min-height: 44px;
   transition: background 0.15s, color 0.15s;
 }
 .month-btn:hover  { background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.9); }
 .month-btn.active { background: var(--black); color: var(--white); }
+
+/* ── PAGE TITLE ───────────────────────────────────── */
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.55);
+  max-width: 420px;
+  width: 90%;
+  margin: 1.25rem auto 0.25rem;
+}
+.page-title span {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  color: rgba(255,255,255,0.35);
+}
 
 /* ── FIXTURE CARD ─────────────────────────────────── */
 .predictor {
@@ -161,8 +190,9 @@ body.predictions-saved .predictor.draw .result-tab { background: var(--gold); }
 /* ── ACTION BUTTONS ───────────────────────────────── */
 .button-container {
   display: flex;
-  justify-content: center;
-  gap: 0.6rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
   max-width: 420px;
   width: 90%;
   margin: 0 auto;
@@ -170,8 +200,13 @@ body.predictions-saved .predictor.draw .result-tab { background: var(--gold); }
   bottom: 0;
   z-index: 98;
   background: var(--red);
-  padding: 0.85rem 0;
+  padding: 0.65rem 0 0.6rem;
   border-top: 1px solid rgba(255,255,255,0.1);
+}
+.btn-row {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
 }
 .action-btn {
   flex: 1;
@@ -196,6 +231,19 @@ body.predictions-saved .predictor.draw .result-tab { background: var(--gold); }
   color: var(--black);
 }
 .action-btn--primary:hover { background: #ffc433; color: var(--black); }
+.how-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+  transition: color 0.15s;
+}
+.how-link:hover { color: rgba(255,255,255,0.7); }
 
 /* ── MODALS ───────────────────────────────────────── */
 .help-modal,
@@ -212,6 +260,10 @@ body.predictions-saved .predictor.draw .result-tab { background: var(--gold); }
   opacity: 0;
   transition: opacity 0.2s ease;
 }
+.help-modal {
+  align-items: center;
+  padding: 16px;
+}
 .help-modal.show,
 .modal.show { visibility: visible; opacity: 1; }
 
@@ -225,9 +277,10 @@ body.predictions-saved .predictor.draw .result-tab { background: var(--gold); }
   overflow-y: auto;
 }
 .help-modal-content {
-  max-width: 600px;
-  padding: 1.5rem;
-  border-radius: 4px;
+  position: relative;
+  max-width: 500px;
+  padding: 2.5rem 1.5rem 1.5rem;
+  border-radius: 8px;
 }
 .help-modal-content p,
 .help-modal-content li { line-height: 1.6; margin-bottom: 0.5rem; }
@@ -256,6 +309,25 @@ body.predictions-saved .predictor.draw .result-tab { background: var(--gold); }
   justify-content: center;
   margin: 1rem 1rem 0 0;
   line-height: 1;
+}
+.help-modal-content .close-button {
+  float: none;
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  background: none;
+  color: rgba(0,0,0,0.3);
+  font-size: 1.5rem;
+  font-weight: 400;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  border-radius: 50%;
+  transition: background 0.15s, color 0.15s;
+}
+.help-modal-content .close-button:hover {
+  background: rgba(0,0,0,0.06);
+  color: rgba(0,0,0,0.65);
 }
 
 /* ── NEWSPAPER ────────────────────────────────────── */

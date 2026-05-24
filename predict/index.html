@@ -33,9 +33,9 @@
 
 <div id="help-modal" class="help-modal">
   <div class="help-modal-content">
-    <span class="close-button" onclick="toggleHelpModal()">&times;</span>
+    <button class="close-button" onclick="toggleHelpModal()">&times;</button>
     <p>Welcome to the Boro Predictor 2025/26. Guess the score for every Middlesbrough match in the 2025/26 EFL season before the first game kicks and compete to win post season prizes.</p>
-    <h2 style="text-align: center;">How Scoring Works</h2>
+    <h2>How Scoring Works</h2>
     <p>
       For each EFL fixture involving Middlesbrough this season you can score a maximum of 4 points from your prediction.
       <ul>
@@ -63,15 +63,19 @@
   <button class="month-btn"        data-month="May"       onclick="filterMonth('May')">May</button>
 </div>
 
+<div class="page-title">Predict <span>2025/26</span></div>
+
 <div class="container" id="container">
   <!-- Matches rendered by JS -->
 </div>
 
 <div class="button-container">
-  <button class="action-btn" onclick="toggleHelpModal()">How it works</button>
-  <button class="action-btn" onclick="calculatePoints()">Report</button>
-  <button class="action-btn action-btn--danger" id="clearScoresBtn">Clear All</button>
-  <button class="action-btn action-btn--primary" onclick="savePredictions()">Save</button>
+  <div class="btn-row">
+    <button class="action-btn" onclick="calculatePoints()">Report</button>
+    <button class="action-btn action-btn--danger" id="clearScoresBtn">Clear All</button>
+    <button class="action-btn action-btn--primary" onclick="savePredictions()">Save</button>
+  </div>
+  <button class="how-link" onclick="toggleHelpModal()">How it works</button>
 </div>
 
 <div id="points-result" class="points-display"></div>
