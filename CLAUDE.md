@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Boro Predictor is a static web app for Middlesbrough FC fans to predict scores for all 46 fixtures in the 2025/26 EFL Championship season. It also includes a separate multi-player prediction league backed by Supabase with a waitlist landing page and a live points ladder.
+Boro Predictor is a static web app for Middlesbrough FC fans to predict scores for all 46 fixtures in the 2025/26 EFL Championship season. It includes a multi-player prediction league backed by Supabase, with auth, a points ladder, and a waitlist landing page.
 
 ## Running the App
 
@@ -12,32 +12,51 @@ No build step or install required — open any HTML file directly in a browser. 
 
 ## Page Architecture
 
-Four distinct pages, each self-contained:
+Five pages, each self-contained:
 
 | File | Purpose |
 |---|---|
-| `index.html` | Main predictor — all 46 fixtures, localStorage-only, no auth |
-| `landing.html` | Simple interest registration page (no Supabase — form is a stub, `TODO` in script) |
-| `boro-landing/index.html` | Full landing page with Supabase waitlist email capture |
-| `boro-ladder/index.html` | Live points ladder — requires Supabase auth (magic link sign-in) |
+| `landing/index.html` | Waitlist / sign-up landing page with Supabase email capture |
+| `dashboard/index.html` | Home — shows next upcoming fixture + player's saved prediction |
+| `predict/index.html` | Main predictor — all 46 fixtures, saves to Supabase |
+| `ladder/index.html` | Live points ladder |
+| `account/index.html` | Display name, club badge picker, prediction status, sign out |
 
-`results.html` is an incomplete page that fetches from a Google Apps Script URL; it also reads from `localStorage` key `boroPredictions` (note: `index.html` saves under `boroScores` — these differ and is a known inconsistency).
+All pages except `landing/` require a Supabase auth session and redirect to `../landing/` if none is found.
 
-## index.html — Predictor App
+## CSS Architecture
 
-All application logic is inline `<script>`. `styles.css` handles all styling including the newspaper-style report modal.
+Three layers, applied in order:
+
+| File | Scope |
+|---|---|
+| `assets/tokens.css` | Global reset, CSS custom properties (colours, fonts, `--nav-height`), Google Fonts import |
+| `assets/nav.css` | Shared `.navbar` component |
+| `styles.css` | Predictor-specific styles (fixture cards, report modal) — only loaded by `predict/index.html` |
+
+`dashboard/`, `account/`, and `ladder/` each have their own inline `<style>` block and do not load `styles.css`.
+
+Design tokens (from `assets/tokens.css`): `--red`, `--red-dark`, `--black`, `--gold`, `--blue`, `--white`, `--off-white`, `--gray`, `--font-display` (Barlow Condensed), `--font-body` (Barlow).
+
+## predict/index.html — Predictor App
+
+All application logic is inline `<script>`.
 
 ### Data Model
 
-- `fixtures` — 46 `{ home, away, date }` objects. Only `fixtures[0]` has a real date (`9/8/25`); all others are placeholder `30/8/25`.
+- `fixtures` — 46 `{ home, away, date }` objects. Dates are placeholders pending the full schedule.
 - `scores` — 46 `{ home, away }` objects; the only mutable state.
-- `teams` — lookup from team name → badge SVG path in `badges/`. Norwich City's entry points to `.png` rather than `.svg` (known inconsistency).
+- `teams` — lookup from team name → badge SVG path in `assets/badges/`.
 
-Predictions persist via `saveScoresToLocal()` / `loadScoresFromLocal()` under `localStorage` key `boroScores`.
+### Persistence
+
+- `saveScoresToLocal()` / `loadScoresFromLocal()` — localStorage key `boroScores` (fast, offline)
+- `savePredictions()` — upserts all 46 rows to the Supabase `predictions` table; also calls `saveScoresToLocal()`
+- `loadPredictionsFromDB()` — loads from Supabase on auth init, falls back to localStorage if no DB rows exist
 
 ### Month Dividers
 
-`renderFixtures()` uses a hardcoded index map to inject month header SVGs between fixture cards:
+`renderFixtures()` uses a hardcoded index map to inject month header dividers between fixture cards:
 
 ```js
 { 0: 'August', 4: 'September', 8: 'October', 12: 'November',
@@ -52,10 +71,12 @@ If fixtures are reordered, these indices must be updated manually.
 | Function | Purpose |
 |---|---|
 | `renderFixtures()` | Builds full fixture list DOM from `fixtures` + `scores` |
-| `changeScore(index, team, delta)` | Mutates `scores`, clamps 0–9, updates colour, saves |
+| `filterMonth(month)` | Shows/hides `.predictor` and `.month-divider` elements by `data-month` |
+| `changeScore(index, team, delta)` | Mutates `scores`, clamps 0–9, updates colour, saves to localStorage |
 | `updateFixtureColor(index)` | Applies `.win` / `.loss` class based on Boro's predicted result |
 | `calculatePoints()` | Tallies wins/draws/losses/GD, maps total points to one of 6 narrative tiers, opens report modal |
-| `submitPredictions()` | Exports to `.xlsx` via XLSX CDN library |
+| `savePredictions()` | Upserts all predictions to Supabase `predictions` table |
+| `submitPredictions()` | Exports predictions to `.xlsx` via XLSX CDN library |
 
 ### Season Outcome Tiers
 
@@ -68,20 +89,34 @@ If fixtures are reordered, these indices must be updated manually.
 - Correct result (W/D/L): 1 pt
 - Exact scoreline: 4 pts (replaces the above three, not in addition)
 
-## Supabase Integration (boro-landing + boro-ladder)
+## Supabase Integration
 
-Both `boro-landing/index.html` and `boro-ladder/index.html` contain hardcoded `SUPABASE_URL` and `SUPABASE_ANON_KEY` constants near the top of their `<script>` blocks. These are the anon (public) keys — safe to expose client-side.
+All four authenticated pages share the same `SUPABASE_URL` and `SUPABASE_ANON_KEY` constants — hardcoded near the top of each page's `<script>` block. These are anon (public) keys, safe to expose client-side.
 
-`boro-ladder/schema.sql` defines the full schema: `waitlist`, `players`, `fixtures`, `predictions`, `results`, `settings` tables plus a `ladder` VIEW that computes points using the same scoring rules as the JS app. Row Level Security is enabled on all tables.
+`ladder/schema.sql` defines the full schema: `waitlist`, `players`, `fixtures`, `predictions`, `results`, `settings` tables plus a `ladder` VIEW that computes points using the same scoring rules as the JS app. RLS is enabled on all tables.
 
-The ladder uses magic-link auth (`sb.auth.signInWithOtp`). A Postgres trigger (`handle_new_user`) auto-creates a row in `players` on first login using the email prefix as the default name.
+Auth uses magic-link (`sb.auth.signInWithOtp`). A Postgres trigger (`handle_new_user`) auto-creates a `players` row on first login using the email prefix as the default name.
 
-Predictions are locked site-wide via a `settings` table row (`key = 'predictions_locked'`, `value = 'true'/'false'`). The ladder page reads this on load.
+Predictions are locked site-wide via `settings` table (`key = 'predictions_locked'`, `value = 'true'/'false'`). Dashboard and account pages both read this flag.
 
-See `boro-ladder/SETUP.md` for the end-to-end setup guide (Supabase project creation, running schema.sql, configuring redirect URLs for GitHub Pages, and day-to-day result entry).
+See `ladder/SETUP.md` for the end-to-end setup guide (Supabase project creation, schema.sql, redirect URLs for GitHub Pages, and day-to-day result entry).
+
+## account/index.html
+
+Allows authenticated players to:
+- Edit their display name (saved to `players.name`)
+- Choose a club badge to represent them on the ladder (saved to `players.team_name`)
+- View prediction lock status and count of fixtures predicted
+- Sign out
+
+## dashboard/index.html
+
+Shows the next upcoming fixture (first `fixtures` row with a `match_date` in the future) and the player's saved prediction for that match. Uses the same `badges` map as the predictor page.
 
 ## Assets
 
-- `badges/` — SVG team logos. 24 clubs; Norwich City's path in the `teams` object points to `.png`.
-- Root SVGs — UI icons (`help.svg`, `clearall.svg`, `Download.svg`) and month header images (`August.svg`, etc.).
-- Outcome images — `boro-paper.webp`, `boro-promotion.webp`, `boro-playoffs.webp`, `boro-relegation.webp`, `boro-disaster.jpg` — used in the report modal.
+All assets live in `assets/`. Unused files are kept in `assets/_unused/` for reference.
+
+- `assets/badges/` — SVG team logos for all 24 clubs (filename matches the team key used in `teams`/`badges` maps across pages).
+- `assets/` — UI icons (`help.svg`), branding (`BoroPredictor.svg`, `DHD-logo.png`, `favicon.svg`).
+- Outcome images — `boro-paper.webp`, `boro-promotion.webp`, `boro-playoffs.webp`, `boro-relegation.webp`, `boro-disaster.jpg` — used in the predict page's report modal.

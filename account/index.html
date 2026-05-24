@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account — Boro Predictor 25/26</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/nav.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      background: var(--red);
+      color: var(--white);
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
+
+    /* ── PAGE LAYOUT ─────────────────────────────────── */
+    .page {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 0.25rem;
+    }
+
+    .page-subtitle {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── CARDS ───────────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #999;
+      margin-bottom: 1rem;
+    }
+
+    /* ── FORM FIELDS ─────────────────────────────────── */
+    .field-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .field-input {
+      flex: 1;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--black);
+      border: 2px solid var(--gray);
+      border-radius: 6px;
+      padding: 0.6rem 0.85rem;
+      background: var(--off-white);
+      transition: border-color 0.15s;
+      outline: none;
+    }
+
+    .field-input:focus {
+      border-color: var(--red);
+    }
+
+    .btn {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: none;
+      border-radius: 6px;
+      padding: 0.65rem 1.25rem;
+      cursor: pointer;
+      transition: opacity 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn:disabled { opacity: 0.4; cursor: default; }
+
+    .btn-primary {
+      background: var(--red);
+      color: var(--white);
+    }
+    .btn-primary:hover:not(:disabled) { background: var(--red-dark); }
+
+    .btn-ghost {
+      background: var(--gray);
+      color: var(--black);
+    }
+    .btn-ghost:hover:not(:disabled) { background: #ddd; }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--red);
+      border: 2px solid var(--red);
+    }
+    .btn-danger:hover:not(:disabled) {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    .save-feedback {
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 0.6rem;
+      min-height: 1.2em;
+      color: #4caf50;
+    }
+
+    .save-feedback.error { color: var(--red); }
+
+
+    /* ── STATUS PILL ─────────────────────────────────── */
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+    }
+
+    .status-row + .status-row {
+      border-top: 1px solid var(--gray);
+    }
+
+    .status-label {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .pill {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.7rem;
+      border-radius: 99px;
+    }
+
+    .pill-green  { background: #e6f9ed; color: #2e7d47; }
+    .pill-red    { background: #fde8ec; color: var(--red); }
+    .pill-gold   { background: #fff4d6; color: #9a6c00; }
+    .pill-gray   { background: var(--gray); color: #777; }
+
+    /* ── PROGRESS BAR ───────────────────────────────────*/
+    .progress-wrap {
+      background: var(--gray);
+      border-radius: 99px;
+      height: 5px;
+      margin-top: 0.85rem;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--red);
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    /* ── SIGN OUT ─────────────────────────────────────── */
+    .signout-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .signout-desc {
+      flex: 1;
+      min-width: 0;
+      font-size: 0.88rem;
+      color: #777;
+      overflow-wrap: break-word;
+    }
+
+    /* ── SKELETON / LOADING ──────────────────────────── */
+    .loading-state {
+      text-align: center;
+      padding: 4rem 0;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 1rem;
+    }
+
+    .dhd-logo { max-height: 24px; opacity: 0.3; display: inline-block; transition: opacity 0.2s; }
+    .dhd-logo:hover { opacity: 0.65; }
+    .copy { font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../landing/"><img src="../assets/BoroPredictor.svg" alt="Boro Predictor logo" class="logo"></a>
+  <div class="nav-links">
+    <a class="nav-link" href="../dashboard/">Home</a>
+    <a class="nav-link" href="../predict/">Predict</a>
+    <a class="nav-link" href="../ladder/">Ladder</a>
+    <a class="nav-link active" href="../account/">Account</a>
+  </div>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+    <span class="nav-toggle-bar"></span>
+    <span class="nav-toggle-bar"></span>
+    <span class="nav-toggle-bar"></span>
+  </button>
+</nav>
+
+<div class="page" id="page" style="display:none">
+
+  <h1 class="page-title">Your Account</h1>
+  <p class="page-subtitle" id="user-email"></p>
+
+  <!-- Display name -->
+  <div class="card">
+    <p class="card-title">Display Name</p>
+    <p class="card-subtitle">This is how you appear on the ladder.</p>
+    <div class="field-row">
+      <input class="field-input" type="text" id="name-input" maxlength="32" placeholder="Enter your name">
+      <button class="btn btn-primary" id="save-name-btn" onclick="saveName()">Save</button>
+    </div>
+    <p class="save-feedback" id="name-feedback"></p>
+  </div>
+
+  <!-- Prediction status -->
+  <div class="card">
+    <p class="card-title">Prediction Status</p>
+    <div class="status-row">
+      <span class="status-label">Predictions</span>
+      <span class="pill" id="pill-locked">—</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">Fixtures predicted</span>
+      <span class="pill pill-gray" id="pill-count">—</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- Mailing list -->
+  <div class="card">
+    <p class="card-title">Mailing List</p>
+    <div class="signout-row">
+      <span class="signout-desc">Remove your email from our mailing list.</span>
+      <button class="btn btn-ghost" id="unsub-btn" onclick="unsubscribe()">Unsubscribe</button>
+    </div>
+    <p class="save-feedback" id="mail-feedback"></p>
+  </div>
+
+  <!-- Sign out -->
+  <div class="card">
+    <p class="card-title">Session</p>
+    <div class="signout-row">
+      <span class="signout-desc">Signed in as <strong id="signout-email"></strong></span>
+      <button class="btn btn-danger" onclick="signOut()">Sign out</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="loading-state" id="loading">Loading…</div>
+
+<footer>
+  <img class="dhd-logo" src="../assets/DHD-logo.png" alt="DHD Logo">
+  <p class="copy">David Holly Design - 2026</p>
+</footer>
+
+<script>
+  // ── NAV HAMBURGER ─────────────────────────────────────
+  (function () {
+    const navbar = document.querySelector('.navbar');
+    const toggle = document.getElementById('nav-toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', () => navbar.classList.toggle('open'));
+    document.addEventListener('click', e => {
+      if (navbar.classList.contains('open') && !navbar.contains(e.target))
+        navbar.classList.remove('open');
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') navbar.classList.remove('open');
+    });
+  })();
+
+  const SUPABASE_URL      = 'https://tkaayrdevanrozsbxmlv.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRrYWF5cmRldmFucm96c2J4bWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwMTU2ODksImV4cCI6MjA5NDU5MTY4OX0.bnnFYJgolI5vasGlA74eVTyAQiCUgQsnz5_BbVGBmi0';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let currentUser = null;
+
+  // ── INIT ───────────────────────────────────────────────
+  async function init() {
+    const { data: { session } } = await sb.auth.getSession();
+    // TODO: restore auth redirect when sign-in flow is wired up
+    // if (!session) { window.location.href = '../landing/'; return; }
+    currentUser = session?.user ?? null;
+
+    // sb.auth.onAuthStateChange((_event, session) => {
+    //   if (!session) window.location.href = '../landing/';
+    // });
+
+    await loadProfile();
+    await loadStatus();
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('page').style.display    = 'block';
+  }
+
+  // ── LOAD PROFILE ──────────────────────────────────────
+  async function loadProfile() {
+    const email = currentUser?.email ?? '';
+    document.getElementById('user-email').textContent    = email;
+    document.getElementById('signout-email').textContent = email;
+
+    if (!currentUser) return;
+
+    const { data, error } = await sb
+      .from('players')
+      .select('name')
+      .eq('id', currentUser.id)
+      .single();
+
+    if (error || !data) return;
+
+    document.getElementById('name-input').value = data.name || '';
+  }
+
+  // ── LOAD STATUS ───────────────────────────────────────
+  async function loadStatus() {
+    // Predictions locked?
+    const { data: setting } = await sb
+      .from('settings')
+      .select('value')
+      .eq('key', 'predictions_locked')
+      .single();
+
+    const locked = setting?.value === 'true';
+    const pillLocked = document.getElementById('pill-locked');
+    pillLocked.textContent = locked ? 'Locked' : 'Open';
+    pillLocked.className   = 'pill ' + (locked ? 'pill-red' : 'pill-green');
+
+    if (!currentUser) return;
+
+    // How many predictions saved?
+    const { count } = await sb
+      .from('predictions')
+      .select('*', { count: 'exact', head: true })
+      .eq('player_id', currentUser.id);
+
+    const pillCount = document.getElementById('pill-count');
+    const total = 46;
+    const made  = count ?? 0;
+    pillCount.textContent = `${made} / ${total}`;
+    pillCount.className   = 'pill ' + (made === total ? 'pill-green' : made > 0 ? 'pill-gold' : 'pill-gray');
+    document.getElementById('progress-fill').style.width = `${(made / total) * 100}%`;
+  }
+
+  // ── SAVE NAME ─────────────────────────────────────────
+  async function saveName() {
+    const name = document.getElementById('name-input').value.trim();
+    const feedback = document.getElementById('name-feedback');
+    const btn = document.getElementById('save-name-btn');
+
+    if (!name) {
+      feedback.textContent = 'Name cannot be empty.';
+      feedback.className   = 'save-feedback error';
+      return;
+    }
+
+    btn.disabled = true;
+    feedback.textContent = '';
+
+    const { error } = await sb
+      .from('players')
+      .update({ name })
+      .eq('id', currentUser.id);
+
+    btn.disabled = false;
+
+    if (error) {
+      feedback.textContent = 'Couldn\'t save — try again.';
+      feedback.className   = 'save-feedback error';
+    } else {
+      feedback.textContent = 'Name updated ✓';
+      feedback.className   = 'save-feedback';
+      setTimeout(() => { feedback.textContent = ''; }, 3000);
+    }
+  }
+
+  // ── UNSUBSCRIBE ───────────────────────────────────────
+  async function unsubscribe() {
+    const btn      = document.getElementById('unsub-btn');
+    const feedback = document.getElementById('mail-feedback');
+    btn.disabled   = true;
+
+    const { data } = await sb
+      .from('waitlist')
+      .select('id')
+      .eq('email', currentUser.email)
+      .single();
+
+    if (!data) {
+      feedback.textContent = 'No subscription found for this email.';
+      feedback.className   = 'save-feedback error';
+      btn.disabled = false;
+      return;
+    }
+
+    const { error } = await sb
+      .from('waitlist')
+      .delete()
+      .eq('email', currentUser.email);
+
+    if (error) {
+      feedback.textContent = 'Couldn\'t unsubscribe — try again.';
+      feedback.className   = 'save-feedback error';
+      btn.disabled = false;
+    } else {
+      feedback.textContent = 'Unsubscribed ✓';
+      feedback.className   = 'save-feedback';
+      btn.textContent = 'Unsubscribed';
+    }
+  }
+
+  // ── SIGN OUT ──────────────────────────────────────────
+  async function signOut() {
+    await sb.auth.signOut();
+    window.location.href = '../landing/';
+  }
+
+  // ── NAME INPUT: save on Enter ─────────────────────────
+  document.getElementById('name-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveName();
+  });
+
+  init();
+</script>
+</body>
+</html>

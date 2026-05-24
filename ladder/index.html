@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boro Predictor 25/26 — Ladder</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/nav.css">
+  <style>
+    body {
+      font-family: var(--font-body);
+      background: var(--red);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 2rem 1rem 3rem;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.55);
+    }
+    .page-title span {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── TABLE ── */
+    .table-wrap { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; color: var(--black); }
+    thead { background: var(--off-white); }
+    thead th {
+      padding: 0.65rem 0.75rem;
+      text-align: left;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.4);
+      white-space: nowrap;
+    }
+    thead th.right  { text-align: right; }
+    thead th.center { text-align: center; }
+    tbody tr { border-top: 1px solid var(--gray); transition: background 0.15s; }
+    tbody tr:hover { background: var(--off-white); }
+    tbody tr.me { background: rgba(23,70,157,0.08); border-left: 3px solid var(--blue); }
+    tbody tr.me:hover { background: rgba(23,70,157,0.14); }
+    td { padding: 0.7rem 0.75rem; vertical-align: middle; }
+    td.right  { text-align: right; }
+    td.center { text-align: center; }
+    .rank { font-family: var(--font-display); font-size: 0.9rem; font-weight: 800; color: rgba(0,0,0,0.25); width: 32px; }
+    .rank.top3    { color: #3aaa6e; }
+    .rank.bottom3 { color: var(--red-dark); }
+    .player-name { font-weight: 700; color: var(--black); }
+    .points-cell { font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; color: var(--black); }
+    .num { font-variant-numeric: tabular-nums; }
+
+    /* ── FORM BOXES ── */
+    .form-boxes { display: flex; gap: 3px; justify-content: center; }
+    .form-box {
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+      background: var(--gray);
+      flex-shrink: 0;
+    }
+    .form-box.pts-exact { background: #3aaa6e; }
+    .form-box.pts-part  { background: var(--gold); }
+    .form-box.pts-zero  { background: var(--red-dark); }
+
+    /* ── LOADING / EMPTY ── */
+    .state-msg { text-align: center; padding: 3rem 1rem; color: rgba(255,255,255,0.45); font-size: 0.9rem; }
+    .spinner {
+      width: 28px; height: 28px;
+      border: 3px solid rgba(255,255,255,0.15);
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FOOTER ── */
+    footer { text-align: center; padding: 1.5rem 1rem; }
+    .dhd-logo { max-height: 24px; opacity: 0.3; transition: opacity 0.2s; }
+    .dhd-logo:hover { opacity: 0.65; }
+    footer p { font-size: 0.7rem; color: rgba(255,255,255,0.25); margin-top: 0.5rem; }
+
+    /* ── SCORING NOTE ── */
+    .scoring-note {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    .scoring-note strong { color: rgba(255,255,255,0.8); }
+
+    /* ── HEADER TOOLTIPS ── */
+    thead th[data-tip] {
+      cursor: help;
+      position: relative;
+    }
+    thead th[data-tip]::after {
+      content: attr(data-tip);
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: rgba(12,12,12,0.92);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 10;
+      transition: opacity 0.15s;
+    }
+    thead th[data-tip]:hover::after { opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 520px) {
+      thead th.hide-mobile, td.hide-mobile { display: none; }
+      .stat-value { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="../landing/"><img src="../assets/BoroPredictor.svg" alt="Boro Predictor" class="logo"></a>
+    <div class="nav-links">
+      <a class="nav-link" href="../dashboard/">Home</a>
+      <a class="nav-link" href="../predict/">Predict</a>
+      <a class="nav-link active" href="../ladder/">Ladder</a>
+      <a class="nav-link" href="../account/">Account</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+  </nav>
+
+  <main id="ladder-main">
+
+    <div class="page-header">
+      <div class="page-title">
+        Ladder <span id="season-label">2025/26</span>
+      </div>
+    </div>
+
+    <p class="scoring-note">
+      <strong>4 pts</strong> exact scoreline &nbsp;·&nbsp;
+      <strong>1 pt</strong> correct result (W/D/L) &nbsp;·&nbsp;
+      <strong>1 pt</strong> each correct goals tally
+    </p>
+
+    <div class="table-wrap">
+      <div class="state-msg" id="loading-msg">
+        <div class="spinner"></div>
+        Loading ladder…
+      </div>
+
+      <table id="ladder-table" style="display:none;">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th class="right hide-mobile" data-tip="Matches played">P</th>
+            <th class="right hide-mobile" data-tip="Boro goals correctly predicted">GF</th>
+            <th class="right hide-mobile" data-tip="Opposition goals correctly predicted">GA</th>
+            <th class="right hide-mobile" data-tip="Correct results (W / D / L)">Results</th>
+            <th class="right hide-mobile" data-tip="Exact scorelines correctly predicted">Scores</th>
+            <th class="right" data-tip="Total points">Pts</th>
+            <th class="center hide-mobile" data-tip="Last 5 fixtures: green = exact, gold = partial, red = 0">Form</th>
+          </tr>
+        </thead>
+        <tbody id="ladder-body"></tbody>
+      </table>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <img src="../assets/DHD-logo.png" alt="DHD" class="dhd-logo">
+    <p>Boro Predictor 25/26 &mdash; Not affiliated with Middlesbrough FC</p>
+  </footer>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ── NAV HAMBURGER ─────────────────────────────────────
+    (function () {
+      const navbar = document.querySelector('.navbar');
+      const toggle = document.getElementById('nav-toggle');
+      if (!toggle) return;
+      toggle.addEventListener('click', () => navbar.classList.toggle('open'));
+      document.addEventListener('click', e => {
+        if (navbar.classList.contains('open') && !navbar.contains(e.target))
+          navbar.classList.remove('open');
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') navbar.classList.remove('open');
+      });
+    })();
+
+    // ── CONFIG ──────────────────────────────────────────────
+    // Replace these two values from Settings → API in your Supabase dashboard.
+    const SUPABASE_URL      = 'https://tkaayrdevanrozsbxmlv.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRrYWF5cmRldmFucm96c2J4bWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwMTU2ODksImV4cCI6MjA5NDU5MTY4OX0.bnnFYJgolI5vasGlA74eVTyAQiCUgQsnz5_BbVGBmi0';
+    // ────────────────────────────────────────────────────────
+
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentUser = null;
+
+    // ── BOOT ────────────────────────────────────────────────
+    async function init() {
+      const { data: { session } } = await sb.auth.getSession();
+      currentUser = session?.user ?? null;
+      showLadder();
+    }
+
+    // ── LADDER ───────────────────────────────────────────────
+    async function showLadder() {
+
+      // Load ladder
+      const { data: ladder, error } = await sb
+        .from('ladder')
+        .select('*');
+
+      document.getElementById('loading-msg').style.display = 'none';
+
+      renderLadder(ladder || []);
+    }
+
+    function renderLadder(rows) {
+      const tbody  = document.getElementById('ladder-body');
+      const table  = document.getElementById('ladder-table');
+      const total  = Math.max(rows.length, 24);
+      tbody.innerHTML = '';
+
+      for (let i = 0; i < total; i++) {
+        const row   = rows[i] || null;
+        const rank  = i + 1;
+        const isMe  = row && row.player_id === currentUser?.id;
+
+        let rankClass = '';
+        if (rank <= 3)             rankClass = 'top3';
+        else if (rank > total - 3) rankClass = 'bottom3';
+
+        const tr = document.createElement('tr');
+        if (isMe) tr.classList.add('me');
+
+        tr.innerHTML = `
+          <td class="rank ${rankClass}">${rank}</td>
+          <td><div class="player-name">${row ? escHtml(row.name || '—') : '—'}</div></td>
+          <td class="right num hide-mobile">${row?.played ?? '—'}</td>
+          <td class="right num hide-mobile">${row?.goals_for ?? '—'}</td>
+          <td class="right num hide-mobile">${row?.goals_away ?? '—'}</td>
+          <td class="right num hide-mobile">${row?.correct_results ?? '—'}</td>
+          <td class="right num hide-mobile">${row?.correct_scores ?? '—'}</td>
+          <td class="right points-cell num">${row?.points ?? '—'}</td>
+          <td class="center hide-mobile">${renderForm(row?.form)}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      table.style.display = 'table';
+    }
+
+    function renderForm(form) {
+      const slots = 5;
+      const entries = Array.isArray(form) ? form.slice(-slots) : [];
+      let html = '<div class="form-boxes">';
+      for (let i = 0; i < slots; i++) {
+        if (i >= entries.length) {
+          html += '<div class="form-box"></div>';
+        } else {
+          const pts = entries[i];
+          const cls = pts === 4 ? 'pts-exact' : pts > 0 ? 'pts-part' : 'pts-zero';
+          html += `<div class="form-box ${cls}" title="${pts} pts"></div>`;
+        }
+      }
+      return html + '</div>';
+    }
+
+    // ── HELPERS ──────────────────────────────────────────────
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    init();
+  </script>
+
+</body>
+</html>

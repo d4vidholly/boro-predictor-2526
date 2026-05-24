@@ -36,13 +36,13 @@ You should see: tables `waitlist`, `players`, `fixtures`, `predictions`, `result
 
 Open each of these files and replace the two placeholder values near the top:
 
-**`boro-landing/index.html`**
+**`landing/index.html`**
 ```js
 const SUPABASE_URL      = 'YOUR_SUPABASE_URL';   // ← paste here
 const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // ← paste here
 ```
 
-**`boro-ladder/index.html`**
+**`ladder/index.html`**
 ```js
 const SUPABASE_URL      = 'YOUR_SUPABASE_URL';
 const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
@@ -56,7 +56,7 @@ const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
 2. Set **Site URL** to:
    `https://d4vidholly.github.io/Boro-Predictor-2526/`
 3. Under **Redirect URLs**, add:
-   `https://d4vidholly.github.io/Boro-Predictor-2526/boro-ladder/`
+   `https://d4vidholly.github.io/Boro-Predictor-2526/ladder/`
 4. Save
 
 ---
@@ -64,9 +64,9 @@ const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
 ## 6. GitHub Pages (already live)
 
 - Repo: `https://github.com/d4vidholly/Boro-Predictor-2526`
-- Landing page: `https://d4vidholly.github.io/Boro-Predictor-2526/boro-landing/`
-- Predictor: `https://d4vidholly.github.io/Boro-Predictor-2526/boro-predictor/`
-- Ladder: `https://d4vidholly.github.io/Boro-Predictor-2526/boro-ladder/`
+- Landing page: `https://d4vidholly.github.io/Boro-Predictor-2526/landing/`
+- Predictor: `https://d4vidholly.github.io/Boro-Predictor-2526/predict/`
+- Ladder: `https://d4vidholly.github.io/Boro-Predictor-2526/ladder/`
 
 ---
 

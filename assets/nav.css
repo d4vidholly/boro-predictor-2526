@@ -1,0 +1,83 @@
+/* ── SHARED NAV ─────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--red-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  padding: 0 24px;
+}
+.navbar .logo,
+.navbar > img      { height: 30px; display: block; }
+.nav-links         { display: flex; align-items: center; gap: 1.25rem; }
+.nav-right         { display: flex; align-items: center; gap: 0.75rem; }
+.nav-link {
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+.nav-link:hover  { color: var(--gold); }
+.nav-link.active { color: var(--white); }
+
+/* ── HAMBURGER ─────────────────────────────────────── */
+.nav-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  flex-shrink: 0;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+}
+.nav-toggle-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 1px;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+.navbar.open .nav-toggle .nav-toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.navbar.open .nav-toggle .nav-toggle-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.navbar.open .nav-toggle .nav-toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── MOBILE NAV ─────────────────────────────────────── */
+@media (max-width: 480px) {
+  .navbar { padding: 0 16px; }
+
+  .nav-toggle { display: flex; }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    background: var(--red-dark);
+    z-index: 998;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .navbar.open .nav-links { display: flex; }
+
+  .nav-link {
+    padding: 0.9rem 1.5rem;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+}
