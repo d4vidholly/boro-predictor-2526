@@ -10,6 +10,14 @@ Boro Predictor is a static web app for Middlesbrough FC fans to predict scores f
 
 No build step or install required — open any HTML file directly in a browser. All external libraries load from CDN. There are no automated tests.
 
+## Deployment
+
+- **Live URL:** `https://www.boropredictor.com` (custom domain via GitHub Pages)
+- **Repo:** `https://github.com/d4vidholly/Boro-Predictor-2526`
+- **CNAME file** in repo root points GitHub Pages to `www.boropredictor.com`
+- The root `index.html` immediately redirects to `landing/`
+- All internal links use relative paths (`../dashboard/`, `../landing/`, etc.) — no hardcoded absolute URLs in any page
+
 ## Page Architecture
 
 Five pages, each self-contained:
@@ -91,15 +99,15 @@ If fixtures are reordered, these indices must be updated manually.
 
 ## Supabase Integration
 
-All four authenticated pages share the same `SUPABASE_URL` and `SUPABASE_ANON_KEY` constants — hardcoded near the top of each page's `<script>` block. These are anon (public) keys, safe to expose client-side.
+- **Project ID:** `tkaayrdevanrozsbxmlv`
+- All four authenticated pages share the same `SUPABASE_URL` and `SUPABASE_ANON_KEY` constants — hardcoded near the top of each page's `<script>` block. These are anon (public) keys, safe to expose client-side.
+- `ladder/schema.sql` defines the full schema: `waitlist`, `players`, `fixtures`, `predictions`, `results`, `settings` tables plus a `ladder` VIEW that computes points using the same scoring rules as the JS app. RLS is enabled on all tables.
+- Auth uses magic-link (`sb.auth.signInWithOtp`). A Postgres trigger (`handle_new_user`) auto-creates a `players` row on first login using the email prefix as the default name.
+- Predictions are locked site-wide via `settings` table (`key = 'predictions_locked'`, `value = 'true'/'false'`). Dashboard and account pages both read this flag.
+- **Waitlist** entries are visible in Supabase → Table Editor → `waitlist`.
+- **Auth redirect URLs** in Supabase → Authentication → URL Configuration should include `https://www.boropredictor.com/**` and Site URL set to `https://www.boropredictor.com`.
 
-`ladder/schema.sql` defines the full schema: `waitlist`, `players`, `fixtures`, `predictions`, `results`, `settings` tables plus a `ladder` VIEW that computes points using the same scoring rules as the JS app. RLS is enabled on all tables.
-
-Auth uses magic-link (`sb.auth.signInWithOtp`). A Postgres trigger (`handle_new_user`) auto-creates a `players` row on first login using the email prefix as the default name.
-
-Predictions are locked site-wide via `settings` table (`key = 'predictions_locked'`, `value = 'true'/'false'`). Dashboard and account pages both read this flag.
-
-See `ladder/SETUP.md` for the end-to-end setup guide (Supabase project creation, schema.sql, redirect URLs for GitHub Pages, and day-to-day result entry).
+See `ladder/SETUP.md` for the end-to-end setup guide (Supabase project creation, schema.sql, redirect URLs, and day-to-day result entry). Note: the URLs in that file still reference the old `github.io` path — the live domain is now `www.boropredictor.com`.
 
 ## account/index.html
 
