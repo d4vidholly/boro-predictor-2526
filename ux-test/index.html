@@ -69,22 +69,19 @@
     .comparison > div {
       display: flex;
       flex-direction: column;
+      background: rgba(0,0,0,0.06);
+      border-radius: 14px;
+      padding: 0.75rem;
+      gap: 0.65rem;
     }
     @media (max-width: 900px) {
-      .comparison { grid-template-columns: 1fr; max-width: 550px; }
-    }
-
-    .col-label {
-      font-family: var(--font-display);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(0,0,0,0.38);
-      text-align: center;
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid rgba(0,0,0,0.1);
+      .comparison { grid-template-columns: 1fr; max-width: 550px; gap: 0.75rem; }
+      .comparison > div { padding: 0.5rem; gap: 0.4rem; }
+      .boro-card { padding: 1rem 1.5rem 1rem 1rem; }
+      .boro-team { margin-bottom: 0.6rem; }
+      .s6-match  { padding: 1rem 1.25rem 1rem 0.75rem; }
+      .pick-title { margin: 0.75rem 1.25rem 0.5rem; font-size: 0.85rem; }
+      .select-btn { height: 40px; }
     }
 
     /* ── SHARED +/- BUTTONS ── */
@@ -117,7 +114,7 @@
     .boro-card {
       flex: 1;
       border-radius: 10px;
-      padding: 2.25rem 2.6rem 2.25rem 2.25rem;
+      padding: 2.25rem 1.75rem 2.25rem 1.5rem;
       background: var(--off-white);
       color: var(--black);
       box-shadow: 0 4px 16px rgba(0,0,0,0.15);
@@ -244,7 +241,6 @@
 
     /* ── SELECTOR ── */
     .select-wrap {
-      margin-top: 0.85rem;
       display: flex;
       justify-content: center;
     }
@@ -317,7 +313,6 @@
 
   <!-- OPTION A -->
   <div>
-    <div class="col-label">Option A</div>
     <div class="boro-card" id="b-card">
       <div class="boro-tab"></div>
       <div class="boro-team">
@@ -340,13 +335,12 @@
       </div>
     </div>
     <div class="select-wrap">
-      <button class="select-btn" id="pick-a" onclick="pickOption('a')">Choose Option A</button>
+      <button class="select-btn" id="pick-a" onclick="pickOption('a')">Select</button>
     </div>
   </div>
 
   <!-- OPTION B -->
   <div>
-    <div class="col-label">Option B</div>
     <div class="s6-card" id="s-card">
       <div class="s6-tab"></div>
       <div class="s6-match">
@@ -374,7 +368,7 @@
       </div>
     </div>
     <div class="select-wrap">
-      <button class="select-btn" id="pick-b" onclick="pickOption('b')">Choose Option B</button>
+      <button class="select-btn" id="pick-b" onclick="pickOption('b')">Select</button>
     </div>
   </div>
 
