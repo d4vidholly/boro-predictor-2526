@@ -100,7 +100,7 @@ body {
   background: linear-gradient(to bottom, #e2e0dd, #d4d2cf);
   transition: background 0.3s;
 }
-body.predictions-saved .predictor.win  .result-tab { background: #3aaa6e; }
+body.predictions-saved .predictor.win  .result-tab { background: var(--status-win); }
 body.predictions-saved .predictor.loss .result-tab { background: var(--red-dark); }
 body.predictions-saved .predictor.draw .result-tab { background: var(--gold); }
 

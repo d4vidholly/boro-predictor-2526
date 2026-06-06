@@ -1,3 +1,9 @@
+/* ── CHART COLOURS (secondary — community split donut + key) ── */
+:root {
+  --chart-home: var(--chart-home);
+  --chart-draw: var(--chart-draw);
+}
+
 /* ── PAGE ── */
 .page {
   max-width: 900px;
@@ -101,8 +107,8 @@
   height: 110px;
   border-radius: 50%;
   background: conic-gradient(
-    #1d4ed8 0% 58%,
-    #d1d5db 58% 83%,
+    var(--chart-home) 0% 58%,
+    var(--chart-draw) 58% 83%,
     var(--red) 83% 100%
   );
   position: relative;
@@ -138,8 +144,8 @@
   flex-shrink: 0;
 }
 
-.cs-dot-h { background: #1d4ed8; }
-.cs-dot-d { background: #d1d5db; border: 1px solid #bbb; }
+.cs-dot-h { background: var(--chart-home); }
+.cs-dot-d { background: var(--chart-draw); border: 1px solid #bbb; }
 .cs-dot-a { background: var(--red); }
 
 .cs-key-item strong {

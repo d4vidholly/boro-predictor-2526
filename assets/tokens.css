@@ -2,20 +2,36 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-:focus-visible { outline: 3px solid #FFB400; outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
 :root {
-  --red:       #C8102E;
-  --red-dark:  #8A0F1F;
-  --black:     #0C0C0C;
-  --gold:      #FFB400;
-  --blue:      #17469D;
-  --white:     #FFFFFF;
-  --off-white: #F7F5F2;
-  --gray:      #ECEAE7;
+  /* ── PALETTE ── */
+  --red:        #C8102E;
+  --red-dark:   #8A0F1F;
+  --black:      #0C0C0C;
+  --gold:       #FFB400;
+  --gold-hover: #ffc433;
+  --blue:       #17469D;
+  --white:      #FFFFFF;
+  --off-white:  #F7F5F2;
+  --gray:       #ECEAE7;
+  --green:      #3aaa6e;
 
+  /* ── BRAND ── */
+  --brand-dark:   var(--red-dark);  /* nav, dark surfaces */
+  --brand-bg:     var(--red);       /* page background */
+  --brand-light:  var(--white);     /* text on dark */
+  --brand-accent: var(--gold);      /* CTAs, primary actions */
+
+  /* ── STATUS (secondary — used by ladder / predict / analyst) ── */
+  --status-win:  var(--green);
+  --status-draw: var(--gold);
+  --status-loss: var(--red-dark);
+
+  /* ── TYPOGRAPHY ── */
   --font-display: 'Barlow Condensed', sans-serif;
   --font-body:    'Barlow', system-ui, sans-serif;
 
+  /* ── LAYOUT ── */
   --nav-height: 58px;
 }

@@ -183,7 +183,7 @@
   cursor: pointer;
   transition: background 0.15s;
 }
-.btn-upgrade:hover { background: #ffc433; }
+.btn-upgrade:hover { background: var(--gold-hover); }
 
 .no-prediction {
   text-align: center;
