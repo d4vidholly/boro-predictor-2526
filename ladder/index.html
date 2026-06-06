@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to content</a>
 
   <nav class="navbar">
     <a href="../landing/"><img src="../assets/BoroPredictor.svg" alt="Boro Predictor" class="logo"></a>
@@ -30,7 +31,7 @@
     </button>
   </nav>
 
-  <main id="ladder-main">
+  <main id="main-content">
 
     <div class="page-header">
       <div class="page-title">
@@ -51,18 +52,19 @@
       </div>
 
       <table id="ladder-table" style="display:none;">
+        <caption class="sr-only">2026/27 Points Ladder</caption>
         <thead>
           <tr>
-            <th>#</th>
-            <th class="badge-col" data-tip="Achievement badge"></th>
-            <th>Player</th>
-            <th class="right hide-mobile" data-tip="Matches played">P</th>
-            <th class="right hide-mobile" data-tip="Boro goals correctly predicted">GF</th>
-            <th class="right hide-mobile" data-tip="Opposition goals correctly predicted">GA</th>
-            <th class="right hide-mobile" data-tip="Correct results (W / D / L)">Results</th>
-            <th class="right hide-mobile" data-tip="Exact scorelines correctly predicted">Scores</th>
-            <th class="right" data-tip="Total points">Pts</th>
-            <th class="center hide-mobile" data-tip="Last 5 fixtures: green = exact, gold = partial, red = 0">Form</th>
+            <th scope="col">#</th>
+            <th scope="col" class="badge-col" data-tip="Achievement badge"></th>
+            <th scope="col">Player</th>
+            <th scope="col" class="right hide-mobile" data-tip="Matches played">P</th>
+            <th scope="col" class="right hide-mobile" data-tip="Boro goals correctly predicted">GF</th>
+            <th scope="col" class="right hide-mobile" data-tip="Opposition goals correctly predicted">GA</th>
+            <th scope="col" class="right hide-mobile" data-tip="Correct results (W / D / L)">Results</th>
+            <th scope="col" class="right hide-mobile" data-tip="Exact scorelines correctly predicted">Scores</th>
+            <th scope="col" class="right" data-tip="Total points">Pts</th>
+            <th scope="col" class="center hide-mobile" data-tip="Last 5 fixtures: green = exact, gold = partial, red = 0">Form</th>
           </tr>
         </thead>
         <tbody id="ladder-body"></tbody>

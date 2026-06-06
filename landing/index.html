@@ -14,12 +14,14 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to content</a>
 
   <!-- NAV -->
   <nav class="navbar" style="justify-content:center">
-    <img src="../assets/BoroPredictor.svg" alt="Boro Predictor" class="logo">
+    <a href="../landing/"><img src="../assets/BoroPredictor.svg" alt="Boro Predictor" class="logo"></a>
   </nav>
 
+  <main id="main-content">
 
   <!-- HERO -->
   <section class="hero">
@@ -41,12 +43,13 @@
 
       <div class="form-wrap">
         <form class="form-row" id="signup-form" onsubmit="handleSubmit(event)">
-          <input type="email" id="email-input" placeholder="your@email.com" required autocomplete="email">
+          <label for="email-input" class="sr-only">Email address</label>
+          <input type="email" id="email-input" placeholder="your@email.com" required autocomplete="email" aria-describedby="error-msg">
           <button type="submit" id="submit-btn">Register</button>
         </form>
         <p class="form-note">No spam. We'll email you when places open up.</p>
-        <p class="error-msg" id="error-msg"></p>
-        <div class="success-msg" id="success-msg">
+        <p class="error-msg" id="error-msg" role="status" aria-live="polite"></p>
+        <div class="success-msg" id="success-msg" role="status" aria-live="polite">
           <strong>You're on the list ðŸŽ¯</strong>
           We'll be in touch when places open up.
         </div>
@@ -178,17 +181,20 @@
     <p class="cta-sub">24 spots. One season. All 46 fixtures.</p>
     <div class="form-wrap">
       <form class="form-row" id="signup-form-2" onsubmit="handleSubmitBottom(event)">
-        <input type="email" id="email-input-2" placeholder="your@email.com" required autocomplete="email">
+        <label for="email-input-2" class="sr-only">Email address</label>
+        <input type="email" id="email-input-2" placeholder="your@email.com" required autocomplete="email" aria-describedby="error-msg-2">
         <button type="submit" id="submit-btn-2">Register</button>
       </form>
       <p class="form-note" style="color:rgba(255,255,255,0.28)">No spam. We'll email you when places open up.</p>
-      <p class="error-msg" id="error-msg-2" style="margin-top:0.5rem"></p>
-      <div class="success-msg" id="success-msg-2" style="margin-top:0.75rem">
+      <p class="error-msg" id="error-msg-2" style="margin-top:0.5rem" role="status" aria-live="polite"></p>
+      <div class="success-msg" id="success-msg-2" style="margin-top:0.75rem" role="status" aria-live="polite">
         <strong>You're on the list ðŸŽ¯</strong>
         We'll be in touch when places open up.
       </div>
     </div>
   </section>
+
+  </main>
 
   <!-- FOOTER -->
   <footer>

@@ -15,6 +15,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg?v=2">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to content</a>
 
 <nav class="navbar">
   <a href="../landing/"><img src="../assets/BoroPredictor.svg" alt="Boro Predictor logo" class="logo"></a>
@@ -32,11 +33,13 @@
   </button>
 </nav>
 
-<div id="help-modal" class="help-modal">
+<main id="main-content">
+
+<div id="help-modal" class="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-modal-title">
   <div class="help-modal-content">
     <button class="close-button" onclick="toggleHelpModal()">&times;</button>
     <p>Welcome to the Boro Predictor 2026/27. Guess the score for every Middlesbrough match in the 2026/27 EFL season before the first game kicks and compete to win post season prizes.</p>
-    <h2>How Scoring Works</h2>
+    <h2 id="help-modal-title">How Scoring Works</h2>
     <p>
       For each EFL fixture involving Middlesbrough this season you can score a maximum of 4 points from your prediction.
       <ul>
@@ -64,7 +67,7 @@
   <button class="month-btn"        data-month="May"       onclick="filterMonth('May')">May</button>
 </div>
 
-<div class="page-title">Predict <span>2026/27</span></div>
+<h1 class="page-title">Predict <span>2026/27</span></h1>
 
 <div class="container" id="container">
   <!-- Matches rendered by JS -->
@@ -81,13 +84,13 @@
 
 <div id="points-result" class="points-display"></div>
 
-<div id="report-modal" class="modal">
+<div id="report-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
   <div class="modal-content newspaper">
     <button class="close-button" onclick="toggleReportModal()">&times;</button>
 
     <header class="masthead">
       <div class="paper-banner">
-        <h1 class="paper-title">The Boro Gazette</h1>
+        <h1 class="paper-title" id="report-modal-title">The Boro Gazette</h1>
         <p class="paper-date">May 2026</p>
       </div>
     </header>
@@ -112,6 +115,8 @@
   </div>
 </div>
 
+</main>
+
 <footer>
   <a href="https://d4vidholly.github.io/moveclear/" target="_blank" rel="noopener"><img class="dhd-logo" src="../assets/MoveClear.png" alt="Move Clear"></a>
   <p class="copy">David Holly Design â€” 2026</p>
@@ -129,7 +134,11 @@
         navbar.classList.remove('open');
     });
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') navbar.classList.remove('open');
+      if (e.key === 'Escape') {
+        navbar.classList.remove('open');
+        document.getElementById('help-modal').classList.remove('show');
+        document.getElementById('report-modal').classList.remove('show');
+      }
     });
   })();
 
@@ -262,7 +271,7 @@
 
     return `
       <div class="predictor" id="match-${index}" data-month="${month}">
-        <div class="result-tab"></div>
+        <div class="result-tab" role="img"></div>
         <div class="competition-label">EFL Championship</div>
         <div class="matchday-title">Matchday ${index + 1}<div class="date">${fixture.date}</div></div>
         <div class="team">
@@ -271,9 +280,9 @@
             <div class="team-name">${shortName(fixture.home)}</div>
           </div>
           <div class="score-control">
-            <button class="change-score" onclick="changeScore(${index}, 'home', -1)">-</button>
-            <div id="home-score-${index}" class="score">0</div>
-            <button class="change-score" onclick="changeScore(${index}, 'home', 1)">+</button>
+            <button class="change-score" onclick="changeScore(${index}, 'home', -1)" aria-label="Decrease ${shortName(fixture.home)} score">−</button>
+            <div id="home-score-${index}" class="score" aria-live="polite" aria-atomic="true">0</div>
+            <button class="change-score" onclick="changeScore(${index}, 'home', 1)" aria-label="Increase ${shortName(fixture.home)} score">+</button>
           </div>
         </div>
         <div class="team">
@@ -282,9 +291,9 @@
             <div class="team-name">${shortName(fixture.away)}</div>
           </div>
           <div class="score-control">
-            <button class="change-score" onclick="changeScore(${index}, 'away', -1)">-</button>
-            <div id="away-score-${index}" class="score">0</div>
-            <button class="change-score" onclick="changeScore(${index}, 'away', 1)">+</button>
+            <button class="change-score" onclick="changeScore(${index}, 'away', -1)" aria-label="Decrease ${shortName(fixture.away)} score">−</button>
+            <div id="away-score-${index}" class="score" aria-live="polite" aria-atomic="true">0</div>
+            <button class="change-score" onclick="changeScore(${index}, 'away', 1)" aria-label="Increase ${shortName(fixture.away)} score">+</button>
           </div>
         </div>
       </div>
@@ -357,6 +366,10 @@
     if (boroGoals > oppGoals) predictor.classList.add('win');
     else if (boroGoals < oppGoals) predictor.classList.add('loss');
     else predictor.classList.add('draw');
+
+    const tab = predictor.querySelector('.result-tab');
+    const label = boroGoals > oppGoals ? 'Win' : boroGoals < oppGoals ? 'Loss' : 'Draw';
+    tab.setAttribute('aria-label', label);
   }
 
   // ---------- Clear ----------
@@ -455,6 +468,7 @@
     document.getElementById('summary-details').textContent = summaryText;
     document.getElementById('summary-caption').textContent = summaryCaption;
     document.getElementById('summary-img').src = summaryImg;
+    document.getElementById('summary-img').alt = summaryCaption;
 
     toggleReportModal();
   }
@@ -462,11 +476,15 @@
   // ---------- Modals ----------
 
   function toggleHelpModal() {
-    document.getElementById('help-modal').classList.toggle('show');
+    const modal = document.getElementById('help-modal');
+    const isOpen = modal.classList.toggle('show');
+    if (isOpen) modal.querySelector('.close-button').focus();
   }
 
   function toggleReportModal() {
-    document.getElementById('report-modal').classList.toggle('show');
+    const modal = document.getElementById('report-modal');
+    const isOpen = modal.classList.toggle('show');
+    if (isOpen) modal.querySelector('.close-button').focus();
   }
 
   // ---------- Init ----------

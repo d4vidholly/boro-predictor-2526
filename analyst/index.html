@@ -14,6 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to content</a>
 
 <nav class="navbar">
   <a href="../landing/"><img src="../assets/BoroPredictor.svg" alt="Boro Predictor logo" class="logo"></a>
@@ -30,6 +31,8 @@
     <span class="nav-toggle-bar"></span>
   </button>
 </nav>
+
+<main id="main-content">
 
 <div class="page">
 
@@ -147,16 +150,18 @@
   </div>
 </div>
 
+</main>
+
 <footer>
   <a href="https://d4vidholly.github.io/moveclear/" target="_blank" rel="noopener"><img class="dhd-logo" src="../assets/MoveClear.png" alt="Move Clear"></a>
   <p class="copy">David Holly Design — 2026</p>
 </footer>
 
 <!-- ── ANALYST GATE MODAL ── -->
-<div class="gate-overlay" id="gate-overlay">
+<div class="gate-overlay" id="gate-overlay" role="dialog" aria-modal="true" aria-labelledby="gate-title">
   <div class="gate-modal">
     <span class="gate-icon">📊</span>
-    <div class="gate-title">Analyst</div>
+    <div class="gate-title" id="gate-title">Analyst</div>
     <p class="gate-desc">Your personal stats hub for the 26/27 season. Fan Profile and Your Season are live — community panels and bookies odds connect as the season progresses.</p>
     <button class="gate-btn" id="gate-continue">Enter</button>
   </div>
@@ -174,13 +179,18 @@
         navbar.classList.remove('open');
     });
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') navbar.classList.remove('open');
+      if (e.key === 'Escape') {
+        navbar.classList.remove('open');
+        document.getElementById('gate-overlay').style.display = 'none';
+      }
     });
   })();
 
   document.getElementById('gate-continue').addEventListener('click', function () {
     document.getElementById('gate-overlay').style.display = 'none';
   });
+
+  document.getElementById('gate-continue').focus();
 
   // ── SUPABASE ──
   const SUPABASE_URL      = 'https://tkaayrdevanrozsbxmlv.supabase.co';

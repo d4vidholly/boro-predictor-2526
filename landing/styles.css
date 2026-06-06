@@ -126,7 +126,7 @@ body {
 .form-row button:active { transform: scale(0.98); }
 .form-row button:disabled { background: #bbb; color: #888; cursor: default; }
 
-.form-note { font-size: 0.82rem; color: rgba(255,255,255,0.38); margin-top: 0.75rem; text-align: center; }
+.form-note { font-size: 0.82rem; color: rgba(255,255,255,0.65); margin-top: 0.75rem; text-align: center; }
 .error-msg  { display: none; color: var(--gold); font-size: 0.8rem; margin-top: 0.5rem; text-align: left; }
 .success-msg {
   display: none;
