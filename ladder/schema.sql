@@ -1,5 +1,5 @@
 -- ============================================================
--- BORO PREDICTOR 25/26 — SUPABASE SCHEMA
+-- BORO PREDICTOR 26/27 — SUPABASE SCHEMA
 -- Run this entire file in your Supabase SQL Editor.
 -- ============================================================
 

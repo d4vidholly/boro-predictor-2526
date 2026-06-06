@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Boro Predictor is a static web app for Middlesbrough FC fans to predict scores for all 46 fixtures in the 2025/26 EFL Championship season. It includes a multi-player prediction league backed by Supabase, with auth, a points ladder, and a waitlist landing page.
+Boro Predictor is a static web app for Middlesbrough FC fans to predict scores for all 46 fixtures in the 2026/27 EFL Championship season. It includes a multi-player prediction league backed by Supabase, with auth, a points ladder, and a waitlist landing page.
 
 ## Running the App
 
@@ -20,7 +20,7 @@ No build step or install required — open any HTML file directly in a browser. 
 
 ## Page Architecture
 
-Five pages, each self-contained:
+Six pages, each self-contained:
 
 | File | Purpose |
 |---|---|
@@ -29,20 +29,29 @@ Five pages, each self-contained:
 | `predict/index.html` | Main predictor — all 46 fixtures, saves to Supabase |
 | `ladder/index.html` | Live points ladder |
 | `account/index.html` | Display name, club badge picker, prediction status, sign out |
+| `analyst/index.html` | Personal stats hub — fan profile, community split, season summary (gated behind an intro modal) |
 
 All pages except `landing/` require a Supabase auth session and redirect to `../landing/` if none is found.
 
 ## CSS Architecture
 
-Three layers, applied in order:
+Four layers, applied in the same order on every page:
+
+```html
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/nav.css">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="styles.css">
+```
 
 | File | Scope |
 |---|---|
 | `assets/tokens.css` | Global reset, CSS custom properties (colours, fonts, `--nav-height`), Google Fonts import |
 | `assets/nav.css` | Shared `.navbar` component |
-| `styles.css` | Predictor-specific styles (fixture cards, report modal) — only loaded by `predict/index.html` |
+| `assets/app.css` | Shared page chrome — `body`, `.page-title`, `.loading-state`, `footer`, `.dhd-logo`, `.copy` |
+| `<page>/styles.css` | Page-specific styles — one file per page directory |
 
-`dashboard/`, `account/`, and `ladder/` each have their own inline `<style>` block and do not load `styles.css`.
+Each page directory (`dashboard/`, `predict/`, `ladder/`, `landing/`, `account/`, `analyst/`) has its own `styles.css`. There are no inline `<style>` blocks.
 
 Design tokens (from `assets/tokens.css`): `--red`, `--red-dark`, `--black`, `--gold`, `--blue`, `--white`, `--off-white`, `--gray`, `--font-display` (Barlow Condensed), `--font-body` (Barlow).
 
@@ -126,5 +135,6 @@ Shows the next upcoming fixture (first `fixtures` row with a `match_date` in the
 All assets live in `assets/`. Unused files are kept in `assets/_unused/` for reference.
 
 - `assets/badges/` — SVG team logos for all 24 clubs (filename matches the team key used in `teams`/`badges` maps across pages).
+- `assets/MoveClear.png` — footer logo linked from all pages.
 - `assets/` — UI icons (`help.svg`), branding (`BoroPredictor.svg`, `DHD-logo.png`, `favicon.svg`).
 - Outcome images — `boro-paper.webp`, `boro-promotion.webp`, `boro-playoffs.webp`, `boro-relegation.webp`, `boro-disaster.jpg` — used in the predict page's report modal.
