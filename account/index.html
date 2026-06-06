@@ -8,226 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../assets/tokens.css">
   <link rel="stylesheet" href="../assets/nav.css">
+  <link rel="stylesheet" href="../assets/app.css">
+  <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    body {
-      background: var(--red);
-      color: var(--white);
-      font-family: var(--font-body);
-      min-height: 100vh;
-    }
-
-    /* ── PAGE LAYOUT ─────────────────────────────────── */
-    .page {
-      max-width: 560px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
-    }
-
-    .page-title {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-style: italic;
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 0.25rem;
-    }
-
-    .page-subtitle {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 2.5rem;
-    }
-
-    /* ── CARDS ───────────────────────────────────────── */
-    .card {
-      background: var(--white);
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin-bottom: 1.25rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-    }
-
-    .card-subtitle {
-      font-size: 0.85rem;
-      color: #888;
-      margin-bottom: 1rem;
-    }
-
-    .card-title {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-style: italic;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #999;
-      margin-bottom: 1rem;
-    }
-
-    /* ── FORM FIELDS ─────────────────────────────────── */
-    .field-row {
-      display: flex;
-      gap: 0.75rem;
-      align-items: center;
-    }
-
-    .field-input {
-      flex: 1;
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--black);
-      border: 2px solid var(--gray);
-      border-radius: 6px;
-      padding: 0.6rem 0.85rem;
-      background: var(--off-white);
-      transition: border-color 0.15s;
-      outline: none;
-    }
-
-    .field-input:focus {
-      border-color: var(--red);
-    }
-
-    .btn {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      border: none;
-      border-radius: 6px;
-      padding: 0.65rem 1.25rem;
-      cursor: pointer;
-      transition: opacity 0.15s, background 0.15s;
-      white-space: nowrap;
-    }
-
-    .btn:disabled { opacity: 0.4; cursor: default; }
-
-    .btn-primary {
-      background: var(--red);
-      color: var(--white);
-    }
-    .btn-primary:hover:not(:disabled) { background: var(--red-dark); }
-
-    .btn-ghost {
-      background: var(--gray);
-      color: var(--black);
-    }
-    .btn-ghost:hover:not(:disabled) { background: #ddd; }
-
-    .btn-danger {
-      background: transparent;
-      color: var(--red);
-      border: 2px solid var(--red);
-    }
-    .btn-danger:hover:not(:disabled) {
-      background: var(--red);
-      color: var(--white);
-    }
-
-    .save-feedback {
-      font-size: 0.82rem;
-      font-weight: 600;
-      margin-top: 0.6rem;
-      min-height: 1.2em;
-      color: #4caf50;
-    }
-
-    .save-feedback.error { color: var(--red); }
-
-
-    /* ── STATUS PILL ─────────────────────────────────── */
-    .status-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.6rem 0;
-    }
-
-    .status-row + .status-row {
-      border-top: 1px solid var(--gray);
-    }
-
-    .status-label {
-      font-size: 0.9rem;
-      color: #555;
-    }
-
-    .pill {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 0.25rem 0.7rem;
-      border-radius: 99px;
-    }
-
-    .pill-green  { background: #e6f9ed; color: #2e7d47; }
-    .pill-red    { background: #fde8ec; color: var(--red); }
-    .pill-gold   { background: #fff4d6; color: #9a6c00; }
-    .pill-gray   { background: var(--gray); color: #777; }
-
-    /* ── PROGRESS BAR ───────────────────────────────────*/
-    .progress-wrap {
-      background: var(--gray);
-      border-radius: 99px;
-      height: 5px;
-      margin-top: 0.85rem;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: var(--red);
-      transition: width 0.5s ease;
-      width: 0%;
-    }
-
-    /* ── SIGN OUT ─────────────────────────────────────── */
-    .signout-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .signout-desc {
-      flex: 1;
-      min-width: 0;
-      font-size: 0.88rem;
-      color: #777;
-      overflow-wrap: break-word;
-    }
-
-    /* ── SKELETON / LOADING ──────────────────────────── */
-    .loading-state {
-      text-align: center;
-      padding: 4rem 0;
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: rgba(255,255,255,0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      margin-top: 1rem;
-    }
-
-    .dhd-logo { max-height: 24px; opacity: 0.3; display: inline-block; transition: opacity 0.2s; }
-    .dhd-logo:hover { opacity: 0.65; }
-    .copy { font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 0.5rem; }
-  </style>
 </head>
 <body>
 
@@ -237,6 +21,7 @@
     <a class="nav-link" href="../dashboard/">Home</a>
     <a class="nav-link" href="../predict/">Predict</a>
     <a class="nav-link" href="../ladder/">Ladder</a>
+    <a class="nav-link" href="../analyst/">Analyst</a>
     <a class="nav-link active" href="../account/">Account</a>
   </div>
   <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
@@ -248,8 +33,15 @@
 
 <div class="page" id="page" style="display:none">
 
-  <h1 class="page-title">Your Account</h1>
-  <p class="page-subtitle" id="user-email"></p>
+  <!-- Avatar -->
+  <div class="avatar-section">
+    <div class="avatar-wrap" onclick="openBadgeModal()" title="Choose your badge">
+      <div class="avatar-circle" id="avatar-circle">?</div>
+      <div class="avatar-edit">✏</div>
+    </div>
+    <h1 class="page-title">Your Account</h1>
+    <p class="page-subtitle" id="user-email"></p>
+  </div>
 
   <!-- Display name -->
   <div class="card">
@@ -278,17 +70,17 @@
     </div>
   </div>
 
-  <!-- Mailing list -->
+  <!-- Marketing -->
   <div class="card">
-    <p class="card-title">Mailing List</p>
+    <p class="card-title">Marketing</p>
     <div class="signout-row">
-      <span class="signout-desc">Remove your email from our mailing list.</span>
+      <span class="signout-desc">Unsubscribe your email from our newsletter and updates.</span>
       <button class="btn btn-ghost" id="unsub-btn" onclick="unsubscribe()">Unsubscribe</button>
     </div>
     <p class="save-feedback" id="mail-feedback"></p>
   </div>
 
-  <!-- Sign out -->
+  <!-- Session -->
   <div class="card">
     <p class="card-title">Session</p>
     <div class="signout-row">
@@ -297,17 +89,66 @@
     </div>
   </div>
 
+  <!-- Danger Zone -->
+  <div class="danger-zone-card">
+    <p class="card-title">Danger Zone</p>
+    <div class="signout-row">
+      <span class="signout-desc">Permanently remove your account from Boro Predictor.</span>
+      <button class="btn btn-danger" onclick="openDeleteModal()">Delete Account</button>
+    </div>
+  </div>
+
 </div>
 
 <div class="loading-state" id="loading">Loading…</div>
 
 <footer>
-  <img class="dhd-logo" src="../assets/DHD-logo.png" alt="DHD Logo">
-  <p class="copy">David Holly Design - 2026</p>
+  <a href="https://d4vidholly.github.io/moveclear/" target="_blank" rel="noopener"><img class="dhd-logo" src="../assets/MoveClear.png" alt="Move Clear"></a>
+  <p class="copy">David Holly Design — 2026</p>
 </footer>
 
+<!-- ── BADGE MODAL ── -->
+<div class="modal-overlay" id="badge-modal" onclick="handleBadgeOverlayClick(event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">Your Badges</div>
+      <button class="modal-close" onclick="closeBadgeModal()">✕</button>
+    </div>
+    <p class="modal-desc">Badges are earned through the season. Tap an earned badge to equip it as your profile icon.</p>
+    <div class="badge-grid" id="badge-grid"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeBadgeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveBadge()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── DELETE MODAL ── -->
+<div class="modal-overlay" id="delete-modal" onclick="handleDeleteOverlayClick(event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">Delete Account?</div>
+      <button class="modal-close" onclick="closeDeleteModal()">✕</button>
+    </div>
+    <p class="modal-desc">This cannot be undone. Please read the following before continuing.</p>
+
+    <ul class="delete-warning-list">
+      <li>Your predictions will remain in the database for record-keeping</li>
+      <li>Your display name will be anonymised to "Anonymous"</li>
+      <li>You will forfeit any prize or Manager of the Month eligibility</li>
+    </ul>
+
+    <p class="delete-confirm-label">Are you sure you want to delete your account?</p>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn btn-danger-fill" id="delete-confirm-btn" onclick="deleteAccount()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  // ── NAV HAMBURGER ─────────────────────────────────────
+  // ── NAV HAMBURGER ──
   (function () {
     const navbar = document.querySelector('.navbar');
     const toggle = document.getElementById('nav-toggle');
@@ -318,7 +159,11 @@
         navbar.classList.remove('open');
     });
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') navbar.classList.remove('open');
+      if (e.key === 'Escape') {
+        navbar.classList.remove('open');
+        closeBadgeModal();
+        closeDeleteModal();
+      }
     });
   })();
 
@@ -328,25 +173,156 @@
 
   let currentUser = null;
 
-  // ── INIT ───────────────────────────────────────────────
+  // ── BADGE DEFINITIONS ──
+  const BADGES = [
+    { id: 'founder',    name: 'Founder',          emoji: '⚽', color: '#7c3aed', desc: 'Signed up for Season 25/26',              rarity: 'Common',   earned: true  },
+    { id: 'strong',     name: 'Strong Start',      emoji: '⚡', color: '#d97706', desc: 'Correct result in the first game',        rarity: 'Common',   earned: false },
+    { id: 'offmark',    name: 'Off the Mark',      emoji: '🎯', color: '#dc2626', desc: 'Correct scoreline on any match',          rarity: 'Common',   earned: false },
+    { id: 'motm',       name: 'Manager of Month',  emoji: '🏆', color: '#b45309', desc: 'Win Manager of the Month',               rarity: 'Common',   earned: false },
+    { id: 'fullhouse',  name: 'Full House',         emoji: '🎄', color: '#16a34a', desc: 'Correct scoreline on Boxing Day',        rarity: 'Common',   earned: false },
+    { id: 'optimist',   name: 'Optimist',           emoji: '☀️', color: '#ea580c', desc: 'Predicted Boro to overperform',          rarity: 'Common',   earned: false },
+    { id: 'realist',    name: 'Realist',            emoji: '🔬', color: '#1d4ed8', desc: 'Predicted within 10 pts of actual',     rarity: 'Common',   earned: false },
+    { id: 'mystic',     name: 'Mystic',             emoji: '🔮', color: '#7c3aed', desc: "Predicted Boro's exact final points",    rarity: 'Rare',     earned: false },
+    { id: 'pessimist',  name: 'Pessimist',          emoji: '🌧️', color: '#374151', desc: 'Predicted Boro to underperform',        rarity: 'Common',   earned: false },
+    { id: 'champion',   name: 'Champion',           emoji: '👑', color: '#b45309', desc: 'Finished 1st on the final ladder',      rarity: 'Rare',     earned: false },
+    { id: 'promoted',   name: 'Promoted',           emoji: '🚀', color: '#16a34a', desc: 'Finished 2nd on the final ladder',      rarity: 'Uncommon', earned: false },
+    { id: 'playoffs',   name: 'Play-Offs',          emoji: '🎪', color: '#0891b2', desc: 'Finished 3rd–6th on the ladder',        rarity: 'Uncommon', earned: false },
+    { id: 'relegated',  name: 'Relegated',          emoji: '💀', color: '#991b1b', desc: 'Finished 22nd–24th on the ladder',      rarity: 'Common',   earned: false },
+  ];
+
+  let selectedBadge = localStorage.getItem('boroBadge') || null;
+
+  // ── AVATAR ──
+  function getInitials(name) {
+    const words = (name || '').trim().split(/\s+/).filter(Boolean);
+    if (!words.length) return '?';
+    if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+    return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+  }
+
+  function updateAvatar() {
+    const circle = document.getElementById('avatar-circle');
+    const def = selectedBadge ? BADGES.find(b => b.id === selectedBadge && b.earned) : null;
+    if (def) {
+      circle.textContent = def.emoji;
+      circle.style.background = def.color;
+      circle.style.border = '3px solid rgba(255,255,255,0.4)';
+      circle.style.fontSize = '2rem';
+    } else {
+      const name = document.getElementById('name-input').value;
+      circle.textContent = getInitials(name);
+      circle.style.background = 'rgba(255,255,255,0.18)';
+      circle.style.border = '3px solid rgba(255,255,255,0.3)';
+      circle.style.fontSize = '1.6rem';
+    }
+  }
+
+  // ── BADGE MODAL ──
+  function openBadgeModal() {
+    renderBadgeGrid();
+    document.getElementById('badge-modal').classList.add('open');
+  }
+
+  function closeBadgeModal() {
+    document.getElementById('badge-modal').classList.remove('open');
+  }
+
+  function handleBadgeOverlayClick(e) {
+    if (e.target === document.getElementById('badge-modal')) closeBadgeModal();
+  }
+
+  function renderBadgeGrid() {
+    const grid = document.getElementById('badge-grid');
+    grid.innerHTML = '';
+
+    BADGES.forEach(badge => {
+      const isSelected = selectedBadge === badge.id;
+      const div = document.createElement('div');
+      div.className = 'badge-item' + (badge.earned ? ' earned' : ' locked') + (isSelected ? ' selected' : '');
+      div.title = badge.earned ? badge.desc : 'Not yet earned';
+
+      const checkHtml = isSelected
+        ? '<div class="badge-selected-check">✓</div>'
+        : '';
+
+      div.innerHTML = `
+        <div class="badge-circle" style="background:${badge.color}">
+          <span>${badge.earned ? badge.emoji : '🔒'}</span>
+          ${checkHtml}
+        </div>
+        <div class="badge-name">${badge.name}</div>
+        <div class="badge-rarity">${badge.rarity}</div>
+      `;
+
+      if (badge.earned) {
+        div.addEventListener('click', () => {
+          selectedBadge = isSelected ? null : badge.id;
+          renderBadgeGrid();
+        });
+      }
+
+      grid.appendChild(div);
+    });
+  }
+
+  function saveBadge() {
+    if (selectedBadge) {
+      localStorage.setItem('boroBadge', selectedBadge);
+    } else {
+      localStorage.removeItem('boroBadge');
+    }
+    updateAvatar();
+    closeBadgeModal();
+  }
+
+  // ── DELETE MODAL ──
+  function openDeleteModal() {
+    document.getElementById('delete-modal').classList.add('open');
+  }
+
+  function closeDeleteModal() {
+    document.getElementById('delete-modal').classList.remove('open');
+    const btn = document.getElementById('delete-confirm-btn');
+    btn.disabled = false;
+    btn.textContent = 'Yes, Delete';
+  }
+
+  function handleDeleteOverlayClick(e) {
+    if (e.target === document.getElementById('delete-modal')) closeDeleteModal();
+  }
+
+  async function deleteAccount() {
+    const btn = document.getElementById('delete-confirm-btn');
+    btn.disabled = true;
+    btn.textContent = 'Deleting…';
+
+    if (currentUser) {
+      await sb.from('players').update({ name: 'Anonymous', team_name: null }).eq('id', currentUser.id);
+      await sb.from('waitlist').delete().eq('email', currentUser.email);
+    }
+
+    localStorage.removeItem('boroBadge');
+    localStorage.removeItem('boroScores');
+
+    await sb.auth.signOut();
+    window.location.href = '../landing/';
+  }
+
+  // ── INIT ──
   async function init() {
     const { data: { session } } = await sb.auth.getSession();
-    // TODO: restore auth redirect when sign-in flow is wired up
-    // if (!session) { window.location.href = '../landing/'; return; }
     currentUser = session?.user ?? null;
-
-    // sb.auth.onAuthStateChange((_event, session) => {
-    //   if (!session) window.location.href = '../landing/';
-    // });
 
     await loadProfile();
     await loadStatus();
 
     document.getElementById('loading').style.display = 'none';
     document.getElementById('page').style.display    = 'block';
+
+    updateAvatar();
   }
 
-  // ── LOAD PROFILE ──────────────────────────────────────
+  // ── LOAD PROFILE ──
   async function loadProfile() {
     const email = currentUser?.email ?? '';
     document.getElementById('user-email').textContent    = email;
@@ -365,9 +341,8 @@
     document.getElementById('name-input').value = data.name || '';
   }
 
-  // ── LOAD STATUS ───────────────────────────────────────
+  // ── LOAD STATUS ──
   async function loadStatus() {
-    // Predictions locked?
     const { data: setting } = await sb
       .from('settings')
       .select('value')
@@ -381,7 +356,6 @@
 
     if (!currentUser) return;
 
-    // How many predictions saved?
     const { count } = await sb
       .from('predictions')
       .select('*', { count: 'exact', head: true })
@@ -395,11 +369,11 @@
     document.getElementById('progress-fill').style.width = `${(made / total) * 100}%`;
   }
 
-  // ── SAVE NAME ─────────────────────────────────────────
+  // ── SAVE NAME ──
   async function saveName() {
-    const name = document.getElementById('name-input').value.trim();
+    const name     = document.getElementById('name-input').value.trim();
     const feedback = document.getElementById('name-feedback');
-    const btn = document.getElementById('save-name-btn');
+    const btn      = document.getElementById('save-name-btn');
 
     if (!name) {
       feedback.textContent = 'Name cannot be empty.';
@@ -418,16 +392,17 @@
     btn.disabled = false;
 
     if (error) {
-      feedback.textContent = 'Couldn\'t save — try again.';
+      feedback.textContent = "Couldn't save — try again.";
       feedback.className   = 'save-feedback error';
     } else {
       feedback.textContent = 'Name updated ✓';
       feedback.className   = 'save-feedback';
+      updateAvatar();
       setTimeout(() => { feedback.textContent = ''; }, 3000);
     }
   }
 
-  // ── UNSUBSCRIBE ───────────────────────────────────────
+  // ── UNSUBSCRIBE ──
   async function unsubscribe() {
     const btn      = document.getElementById('unsub-btn');
     const feedback = document.getElementById('mail-feedback');
@@ -452,7 +427,7 @@
       .eq('email', currentUser.email);
 
     if (error) {
-      feedback.textContent = 'Couldn\'t unsubscribe — try again.';
+      feedback.textContent = "Couldn't unsubscribe — try again.";
       feedback.className   = 'save-feedback error';
       btn.disabled = false;
     } else {
@@ -462,13 +437,12 @@
     }
   }
 
-  // ── SIGN OUT ──────────────────────────────────────────
+  // ── SIGN OUT ──
   async function signOut() {
     await sb.auth.signOut();
     window.location.href = '../landing/';
   }
 
-  // ── NAME INPUT: save on Enter ─────────────────────────
   document.getElementById('name-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') saveName();
   });

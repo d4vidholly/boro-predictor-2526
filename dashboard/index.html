@@ -8,343 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../assets/tokens.css">
   <link rel="stylesheet" href="../assets/nav.css">
+  <link rel="stylesheet" href="../assets/app.css">
+  <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    body {
-      background: var(--red);
-      color: var(--white);
-      font-family: var(--font-body);
-      min-height: 100vh;
-    }
-
-    /* ── PAGE ─────────────────────────────────────────── */
-    .page {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
-    }
-
-    .loading-state {
-      text-align: center;
-      padding: 4rem 0;
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: rgba(255,255,255,0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    /* ── SECTION LABEL ────────────────────────────────── */
-    .section-label {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-style: italic;
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 0.75rem;
-    }
-
-    /* ── MATCH CARD ───────────────────────────────────── */
-    .match-card {
-      background: var(--off-white);
-      border-radius: 14px;
-      padding: 2rem 1.75rem 1.75rem;
-      margin-bottom: 1.25rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-      color: var(--black);
-    }
-
-    /* red stripe accent */
-    .match-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: var(--red);
-    }
-
-    .match-meta {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: rgba(0,0,0,0.35);
-      margin-bottom: 1.5rem;
-    }
-
-    .match-teams {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .team {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .team-badge {
-      width: 64px;
-      height: 64px;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-    }
-
-    .team-name {
-      font-family: var(--font-body);
-      font-weight: 600;
-      font-size: 0.88rem;
-      color: var(--black);
-      text-align: center;
-      line-height: 1.25;
-    }
-
-    .match-vs {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 1.1rem;
-      color: rgba(0,0,0,0.18);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      text-align: center;
-    }
-
-    .match-date {
-      margin-top: 1.5rem;
-      text-align: center;
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(0,0,0,0.35);
-    }
-
-    /* ── PREDICTION CARD ──────────────────────────────── */
-    .prediction-card {
-      background: var(--red-dark);
-      border-radius: 14px;
-      padding: 1.75rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-    }
-
-    .prediction-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.85rem;
-    }
-
-    .pred-badge {
-      width: 44px;
-      height: 44px;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
-      flex-shrink: 0;
-    }
-
-    .pred-score {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 3rem;
-      line-height: 1;
-      color: var(--white);
-    }
-
-    .pred-divider {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 2rem;
-      color: rgba(255,255,255,0.25);
-      padding: 0 0.1rem;
-    }
-
-    /* ── PREDICTION UPGRADE ───────────────────────────── */
-    .pred-upgrade {
-      border-top: 1px solid rgba(255,255,255,0.12);
-      margin-top: 1.25rem;
-      padding-top: 1.25rem;
-      text-align: center;
-    }
-
-    .pred-upgrade-label {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 0.62rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--gold);
-      margin-bottom: 0.3rem;
-    }
-
-    .pred-upgrade-text {
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 0.9rem;
-    }
-
-    .btn-upgrade {
-      background: var(--gold);
-      color: var(--black);
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      border: none;
-      border-radius: 6px;
-      padding: 0.65rem 1.5rem;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .btn-upgrade:hover { background: #ffc433; }
-
-    /* No prediction yet */
-    .no-prediction {
-      text-align: center;
-      padding: 0.5rem 0 0.25rem;
-    }
-
-    .no-prediction p {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 1rem;
-    }
-
-    .btn-predict {
-      display: inline-block;
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      background: var(--white);
-      color: var(--red-dark);
-      border: none;
-      border-radius: 6px;
-      padding: 0.7rem 1.5rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-    .btn-predict:hover { opacity: 0.88; }
-
-    /* ── LOCKED BANNER ────────────────────────────────── */
-    .locked-banner {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: #fff4d6;
-      border-radius: 8px;
-      padding: 0.65rem 1rem;
-      margin-top: 1rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #7a5200;
-    }
-
-    .locked-banner svg {
-      flex-shrink: 0;
-      width: 16px;
-      height: 16px;
-    }
-
-    /* ── ALL DONE STATE ───────────────────────────────── */
-    .all-done {
-      text-align: center;
-      padding: 3rem 1rem;
-    }
-
-    .all-done h2 {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 2rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 0.5rem;
-    }
-
-    .all-done p {
-      color: rgba(255,255,255,0.6);
-      font-size: 0.95rem;
-    }
-
-    /* ── PREVIOUS PANELS ─────────────────────────────── */
-    .prev-panels {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-
-    .prev-panel {
-      background: var(--red-dark);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
-      text-align: center;
-    }
-
-    .prev-panel-label {
-      font-family: var(--font-display);
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 0.4rem;
-    }
-
-    .prev-panel-value {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 1.4rem;
-      color: var(--white);
-      line-height: 1;
-    }
-
-
-    /* ── PAGE TITLE ──────────────────────────────────── */
-    .page-title {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 900;
-      font-style: italic;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.55);
-      padding: 1.25rem 1.5rem 0;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .page-title span {
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 400;
-      font-style: normal;
-      text-transform: none;
-      letter-spacing: 0;
-      color: rgba(255,255,255,0.35);
-    }
-
-    /* ── FOOTER ───────────────────────────────────────── */
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      margin-top: 1rem;
-    }
-    .dhd-logo { max-height: 24px; opacity: 0.3; display: inline-block; transition: opacity 0.2s; }
-    .dhd-logo:hover { opacity: 0.65; }
-    .copy { font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 0.5rem; }
-  </style>
 </head>
 <body>
 
@@ -354,6 +21,7 @@
     <a class="nav-link active" href="../dashboard/">Home</a>
     <a class="nav-link" href="../predict/">Predict</a>
     <a class="nav-link" href="../ladder/">Ladder</a>
+    <a class="nav-link" href="../analyst/">Analyst</a>
     <a class="nav-link" href="../account/">Account</a>
   </div>
   <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
@@ -416,7 +84,7 @@
       <div class="pred-upgrade">
         <p class="pred-upgrade-label">Premium</p>
         <p class="pred-upgrade-text">See everyone's upcoming predictions</p>
-        <button class="btn-upgrade">Upgrade</button>
+        <a href="../analyst/" class="btn-upgrade">Upgrade</a>
       </div>
     </div>
 
@@ -425,8 +93,8 @@
 </div>
 
 <footer>
-  <img class="dhd-logo" src="../assets/DHD-logo.png" alt="DHD Logo">
-  <p class="copy">David Holly Design - 2026</p>
+  <a href="https://d4vidholly.github.io/moveclear/" target="_blank" rel="noopener"><img class="dhd-logo" src="../assets/MoveClear.png" alt="Move Clear"></a>
+  <p class="copy">David Holly Design — 2026</p>
 </footer>
 
 <script>
@@ -613,6 +281,7 @@
     document.getElementById('prev-result').textContent = label;
     document.getElementById('prev-result').className   = `prev-panel-value ${outcome}`;
     document.getElementById('prev-score').textContent  = `${result.home_goals} – ${result.away_goals}`;
+    document.querySelector('.prev-panels').style.display = '';
   }
 
   // ── RENDER MATCH ──────────────────────────────────────
@@ -640,7 +309,6 @@
       return;
     }
 
-    const isBoroHome = fixture.home === 'Middlesbrough';
     card.innerHTML = `
       <div class="prediction-inner">
         <img class="pred-badge" src="${badgePath(fixture.home)}" alt="${fixture.home}">

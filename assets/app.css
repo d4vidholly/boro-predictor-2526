@@ -1,0 +1,65 @@
+/* ── SHARED APP STYLES ────────────────────────────────────────────────────
+   Loaded by all pages after tokens.css and nav.css.
+   Page-specific overrides live in each page's own styles.css.
+──────────────────────────────────────────────────────────────────────── */
+
+body {
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+/* ── PAGE TITLE ── */
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.55);
+}
+
+.page-title span {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  color: rgba(255,255,255,0.35);
+}
+
+/* ── LOADING STATE ── */
+.loading-state {
+  text-align: center;
+  padding: 4rem 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 1rem;
+}
+
+.dhd-logo {
+  max-height: 24px;
+  opacity: 0.3;
+  display: inline-block;
+  transition: opacity 0.2s;
+}
+
+.dhd-logo:hover { opacity: 0.65; }
+
+.copy, footer p {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.3);
+  margin-top: 0.5rem;
+}

@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../assets/tokens.css">
   <link rel="stylesheet" href="../assets/nav.css">
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../assets/app.css">
+  <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg?v=2">
 </head>
 <body>
@@ -22,6 +22,7 @@
     <a class="nav-link" href="../dashboard/">Home</a>
     <a class="nav-link active" href="../predict/">Predict</a>
     <a class="nav-link" href="../ladder/">Ladder</a>
+    <a class="nav-link" href="../analyst/">Analyst</a>
     <a class="nav-link" href="../account/">Account</a>
   </div>
   <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
@@ -112,8 +113,8 @@
 </div>
 
 <footer>
-  <img class="dhd-logo" src="../assets/DHD-logo.png" alt="DHD Logo">
-  <p class="copy">David Holly Design - 2026</p>
+  <a href="https://d4vidholly.github.io/moveclear/" target="_blank" rel="noopener"><img class="dhd-logo" src="../MoveClear.png" alt="Move Clear"></a>
+  <p class="copy">David Holly Design — 2026</p>
 </footer>
 
 <script>
@@ -389,30 +390,6 @@
     btn.textContent = 'Saved!';
     btn.disabled = true;
     setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1200);
-  }
-
-  // ---------- Download ----------
-
-  function submitPredictions() {
-    const data = [[
-      'Matchday', 'Home Team', 'Away Team',
-      'Home Goals Prediction', '-', 'Away Goals Prediction',
-      'Actual Score', 'Points'
-    ]];
-
-    fixtures.forEach((fixture, i) => {
-      data.push([
-        `Matchday ${i + 1}`,
-        fixture.home, fixture.away,
-        scores[i].home, '-', scores[i].away,
-        '', ''
-      ]);
-    });
-
-    const worksheet = XLSX.utils.aoa_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Predictions');
-    XLSX.writeFile(workbook, 'boro_predictions_2025_26.xlsx');
   }
 
   // ---------- Report / Gazette ----------

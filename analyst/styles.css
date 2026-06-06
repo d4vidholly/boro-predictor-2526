@@ -1,0 +1,536 @@
+/* ── PAGE ── */
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.page-header { margin-bottom: 2rem; }
+
+.page-title { margin-bottom: 0.2rem; }
+
+.page-subtitle {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ── GRID ── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 620px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+.grid-section-label {
+  grid-column: 1 / -1;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+  padding-top: 0.25rem;
+}
+
+/* ── PANEL ── */
+.panel {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: var(--black);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+
+.panel-wide { grid-column: 1 / -1; }
+
+.panel-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--black);
+  margin-bottom: 0.3rem;
+}
+
+.panel-desc {
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.5;
+  margin-bottom: 1.1rem;
+}
+
+/* ── COMMUNITY SPLIT ── */
+.cs-fixture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #444;
+  background: var(--off-white);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.cs-vs {
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+.cs-chart-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.cs-donut {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #1d4ed8 0% 58%,
+    #d1d5db 58% 83%,
+    var(--red) 83% 100%
+  );
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cs-donut::after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: var(--white);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cs-key { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+
+.cs-key-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: #555;
+}
+
+.cs-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cs-dot-h { background: #1d4ed8; }
+.cs-dot-d { background: #d1d5db; border: 1px solid #bbb; }
+.cs-dot-a { background: var(--red); }
+
+.cs-key-item strong {
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--black);
+  font-size: 0.85rem;
+}
+
+/* ── MOST COMMON SCORE ── */
+.mcs-fixture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #444;
+  background: var(--off-white);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.mcs-vs {
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+.mcs-score {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.8rem;
+  color: var(--black);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-align: center;
+  margin-bottom: 0.55rem;
+}
+
+.mcs-bar-wrap {
+  background: var(--gray);
+  border-radius: 99px;
+  height: 5px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.mcs-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--blue);
+}
+
+.mcs-meta {
+  font-size: 0.78rem;
+  color: #888;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mcs-empty {
+  text-align: center;
+  padding: 1.25rem 0;
+  font-size: 0.85rem;
+  color: #bbb;
+  line-height: 1.5;
+}
+
+/* ── FAN PROFILE ── */
+.profile-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.25rem 0;
+}
+
+.profile-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.profile-type {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  margin-bottom: 0.25rem;
+}
+
+.profile-pts {
+  font-size: 0.78rem;
+  color: #aaa;
+  margin-bottom: 0.6rem;
+}
+
+.profile-pts strong { color: #555; }
+
+.profile-desc {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.55;
+}
+
+.profile-empty {
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.85rem;
+  color: #bbb;
+  line-height: 1.5;
+}
+
+/* ── BOOKIES PROBABILITY ── */
+.prob-match {
+  background: var(--off-white);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.prob-match-label {
+  font-size: 0.7rem;
+  color: #aaa;
+  margin-bottom: 0.15rem;
+}
+
+.prob-scoreline {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--black);
+  letter-spacing: 0.02em;
+}
+
+.prob-pct-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.prob-pct-value {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.2rem;
+  color: var(--black);
+}
+
+.prob-chip {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+}
+
+.prob-long   { background: #fde8ec; color: var(--red); }
+.prob-poss   { background: #fef3c7; color: #92400e; }
+.prob-decent { background: rgba(23,70,157,0.1); color: var(--blue); }
+.prob-strong { background: #e6f9ed; color: #2e7d47; }
+.prob-soon   { background: var(--gray); color: #999; }
+
+.prob-track {
+  background: var(--gray);
+  border-radius: 99px;
+  height: 5px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+
+.prob-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--gold);
+}
+
+.prob-note {
+  font-size: 0.7rem;
+  color: #bbb;
+  line-height: 1.5;
+}
+
+/* ── SEASON ACHIEVEMENT ── */
+.ach-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ach-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.ach-icon { font-size: 2rem; opacity: 0.28; }
+
+.ach-locked-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #bbb;
+}
+
+.ach-locked-desc {
+  font-size: 0.8rem;
+  color: #bbb;
+  line-height: 1.55;
+}
+
+.ach-preview {
+  background: var(--off-white);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  min-width: 200px;
+}
+
+.ach-preview-label {
+  font-size: 0.68rem;
+  color: #ccc;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.ach-preview-score {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: #d0d0d0;
+  margin-bottom: 0.2rem;
+}
+
+.ach-preview-rarity {
+  font-size: 0.7rem;
+  color: #d0d0d0;
+}
+
+@media (max-width: 620px) {
+  .ach-wrap { flex-direction: column; align-items: flex-start; }
+  .ach-preview { min-width: 0; width: 100%; }
+}
+
+/* ── YOUR SEASON ── */
+.ss-stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.ss-stat {
+  flex: 1;
+  background: var(--off-white);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+}
+
+.ss-stat-value {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2rem;
+  color: var(--black);
+  line-height: 1;
+}
+
+.ss-stat-label {
+  font-size: 0.72rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin-top: 0.2rem;
+}
+
+.ss-stat-sub {
+  font-size: 0.72rem;
+  color: #aaa;
+  margin-top: 0.15rem;
+}
+
+.ss-tier { flex: 2; }
+
+.ss-tier-value {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  line-height: 1.1;
+}
+
+.ss-tier-label {
+  font-size: 0.72rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin-top: 0.2rem;
+}
+
+.ss-empty {
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.85rem;
+  color: #bbb;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .ss-stats { flex-wrap: wrap; }
+  .ss-stat  { min-width: calc(50% - 0.5rem); }
+  .ss-tier  { min-width: 100%; flex: 1 1 100%; }
+}
+
+/* ── GATE MODAL ── */
+.gate-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.gate-modal {
+  background: var(--white);
+  color: var(--black);
+  border-radius: 16px;
+  padding: 2.5rem 2rem 2rem;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+}
+.gate-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+.gate-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  margin-bottom: 0.5rem;
+}
+.gate-desc {
+  font-size: 0.88rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.75rem;
+}
+.gate-btn {
+  display: inline-block;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-style: italic;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.75rem 2.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.gate-btn:hover { background: var(--red-dark); }

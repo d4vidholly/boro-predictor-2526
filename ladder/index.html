@@ -9,157 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../assets/tokens.css">
   <link rel="stylesheet" href="../assets/nav.css">
-  <style>
-    body {
-      font-family: var(--font-body);
-      background: var(--red);
-      color: var(--white);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── MAIN ── */
-    main {
-      flex: 1;
-      max-width: 800px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 2rem 1rem 3rem;
-    }
-
-    /* ── PAGE HEADER ── */
-    .page-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-    .page-title {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 900;
-      font-style: italic;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.55);
-    }
-    .page-title span {
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 400;
-      text-transform: none;
-      letter-spacing: 0;
-      color: rgba(255,255,255,0.45);
-    }
-
-    /* ── TABLE ── */
-    .table-wrap { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; color: var(--black); }
-    thead { background: var(--off-white); }
-    thead th {
-      padding: 0.65rem 0.75rem;
-      text-align: left;
-      font-family: var(--font-display);
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(0,0,0,0.4);
-      white-space: nowrap;
-    }
-    thead th.right  { text-align: right; }
-    thead th.center { text-align: center; }
-    tbody tr { border-top: 1px solid var(--gray); transition: background 0.15s; }
-    tbody tr:hover { background: var(--off-white); }
-    tbody tr.me { background: rgba(23,70,157,0.08); border-left: 3px solid var(--blue); }
-    tbody tr.me:hover { background: rgba(23,70,157,0.14); }
-    td { padding: 0.7rem 0.75rem; vertical-align: middle; }
-    td.right  { text-align: right; }
-    td.center { text-align: center; }
-    .rank { font-family: var(--font-display); font-size: 0.9rem; font-weight: 800; color: rgba(0,0,0,0.25); width: 32px; }
-    .rank.top3    { color: #3aaa6e; }
-    .rank.bottom3 { color: var(--red-dark); }
-    .player-name { font-weight: 700; color: var(--black); }
-    .points-cell { font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; color: var(--black); }
-    .num { font-variant-numeric: tabular-nums; }
-
-    /* ── FORM BOXES ── */
-    .form-boxes { display: flex; gap: 3px; justify-content: center; }
-    .form-box {
-      width: 13px;
-      height: 13px;
-      border-radius: 3px;
-      background: var(--gray);
-      flex-shrink: 0;
-    }
-    .form-box.pts-exact { background: #3aaa6e; }
-    .form-box.pts-part  { background: var(--gold); }
-    .form-box.pts-zero  { background: var(--red-dark); }
-
-    /* ── LOADING / EMPTY ── */
-    .state-msg { text-align: center; padding: 3rem 1rem; color: rgba(255,255,255,0.45); font-size: 0.9rem; }
-    .spinner {
-      width: 28px; height: 28px;
-      border: 3px solid rgba(255,255,255,0.15);
-      border-top-color: var(--red);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 1rem;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── FOOTER ── */
-    footer { text-align: center; padding: 1.5rem 1rem; }
-    .dhd-logo { max-height: 24px; opacity: 0.3; transition: opacity 0.2s; }
-    .dhd-logo:hover { opacity: 0.65; }
-    footer p { font-size: 0.7rem; color: rgba(255,255,255,0.25); margin-top: 0.5rem; }
-
-    /* ── SCORING NOTE ── */
-    .scoring-note {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 1rem;
-      line-height: 1.6;
-    }
-    .scoring-note strong { color: rgba(255,255,255,0.8); }
-
-    /* ── HEADER TOOLTIPS ── */
-    thead th[data-tip] {
-      cursor: help;
-      position: relative;
-    }
-    thead th[data-tip]::after {
-      content: attr(data-tip);
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      background: rgba(12,12,12,0.92);
-      color: #fff;
-      font-family: var(--font-body);
-      font-size: 0.72rem;
-      font-weight: 400;
-      letter-spacing: 0;
-      text-transform: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      pointer-events: none;
-      opacity: 0;
-      z-index: 10;
-      transition: opacity 0.15s;
-    }
-    thead th[data-tip]:hover::after { opacity: 1; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 520px) {
-      thead th.hide-mobile, td.hide-mobile { display: none; }
-      .stat-value { font-size: 1.4rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/app.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -169,6 +20,7 @@
       <a class="nav-link" href="../dashboard/">Home</a>
       <a class="nav-link" href="../predict/">Predict</a>
       <a class="nav-link active" href="../ladder/">Ladder</a>
+      <a class="nav-link" href="../analyst/">Analyst</a>
       <a class="nav-link" href="../account/">Account</a>
     </div>
     <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
@@ -202,6 +54,7 @@
         <thead>
           <tr>
             <th>#</th>
+            <th class="badge-col" data-tip="Achievement badge"></th>
             <th>Player</th>
             <th class="right hide-mobile" data-tip="Matches played">P</th>
             <th class="right hide-mobile" data-tip="Boro goals correctly predicted">GF</th>
@@ -220,7 +73,7 @@
   </main>
 
   <footer>
-    <img src="../assets/DHD-logo.png" alt="DHD" class="dhd-logo">
+    <a href="https://d4vidholly.github.io/moveclear/" target="_blank" rel="noopener"><img class="dhd-logo" src="../assets/MoveClear.png" alt="Move Clear"></a>
     <p>Boro Predictor 25/26 &mdash; Not affiliated with Middlesbrough FC</p>
   </footer>
 
@@ -290,8 +143,16 @@
         const tr = document.createElement('tr');
         if (isMe) tr.classList.add('me');
 
+        const change = row?.position_change ?? null;
+        const arrowHtml = change > 0
+          ? `<span class="rank-arrow up">▲</span>`
+          : change < 0
+            ? `<span class="rank-arrow down">▼</span>`
+            : `<span class="rank-arrow"></span>`;
+
         tr.innerHTML = `
-          <td class="rank ${rankClass}">${rank}</td>
+          <td class="rank ${rankClass}">${rank}${arrowHtml}</td>
+          <td class="badge-col">${row?.display_badge ? renderAchBadge(row.display_badge) : '<div class="ach-badge-empty"></div>'}</td>
           <td><div class="player-name">${row ? escHtml(row.name || '—') : '—'}</div></td>
           <td class="right num hide-mobile">${row?.played ?? '—'}</td>
           <td class="right num hide-mobile">${row?.goals_for ?? '—'}</td>
@@ -321,6 +182,29 @@
         }
       }
       return html + '</div>';
+    }
+
+    // ── ACHIEVEMENT BADGES ───────────────────────────────────
+    const BADGES = [
+      { id: 'founder',   name: 'Founder',         emoji: '⚽', color: '#7c3aed' },
+      { id: 'strong',    name: 'Strong Start',     emoji: '⚡', color: '#d97706' },
+      { id: 'offmark',   name: 'Off the Mark',     emoji: '🎯', color: '#dc2626' },
+      { id: 'motm',      name: 'Manager of Month', emoji: '🏆', color: '#b45309' },
+      { id: 'fullhouse', name: 'Full House',        emoji: '🎄', color: '#16a34a' },
+      { id: 'optimist',  name: 'Optimist',          emoji: '☀️', color: '#ea580c' },
+      { id: 'realist',   name: 'Realist',           emoji: '🔬', color: '#1d4ed8' },
+      { id: 'mystic',    name: 'Mystic',            emoji: '🔮', color: '#7c3aed' },
+      { id: 'pessimist', name: 'Pessimist',         emoji: '🌧️', color: '#374151' },
+      { id: 'champion',  name: 'Champion',          emoji: '👑', color: '#b45309' },
+      { id: 'promoted',  name: 'Promoted',          emoji: '🚀', color: '#16a34a' },
+      { id: 'playoffs',  name: 'Play-Offs',         emoji: '🎪', color: '#0891b2' },
+      { id: 'relegated', name: 'Relegated',         emoji: '💀', color: '#991b1b' },
+    ];
+
+    function renderAchBadge(badgeId) {
+      const def = BADGES.find(b => b.id === badgeId);
+      if (!def) return '<div class="ach-badge-empty"></div>';
+      return `<div class="ach-badge" style="background:${def.color}" title="${escHtml(def.name)}">${def.emoji}</div>`;
     }
 
     // ── HELPERS ──────────────────────────────────────────────
