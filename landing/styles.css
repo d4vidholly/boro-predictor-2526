@@ -238,6 +238,16 @@ body {
   justify-content: center;
   position: relative;
 }
+.step-visual.has-img {
+  padding: 0;
+}
+.step-visual.has-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .step-visual::before {
   content: attr(data-num);
   position: absolute;
