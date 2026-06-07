@@ -46,7 +46,7 @@ Users who sign up on the landing page but never enter the competition sit only i
 
 ## Analyst Page — Current Build
 
-Six panels on `analyst/index.html`. Gate modal on entry. Top 4 are dashboard-style (2-col grid). Bottom 2 span full width as season overview panels.
+Four panels on `analyst/index.html`. Gate modal on entry. Fan Profile is live (reads localStorage); others connect to data as it becomes available.
 
 ### Panel 1 — Community Split
 **What:** Pie/donut chart showing how the 24-player community split their prediction for the next fixture (home win / draw / away win).
@@ -59,31 +59,10 @@ Six panels on `analyst/index.html`. Gate modal on entry. Top 4 are dashboard-sty
 - Calculate percentages and re-render the conic-gradient donut dynamically
 - Update fixture label from `fixtures` table or hardcoded array
 
-### Panel 2 — Most Common Score
-**What:** The single most-predicted scoreline among all players for the next fixture. Shows score, a progress bar, and the count/percentage of players who picked it.
-
-**Current state:** ✅ Live — queries `predictions` table (`fixture_index = 0`), groups by scoreline, surfaces the mode.
-
-**Note:** Requires a Supabase RLS policy that allows anon reads of all `predictions` rows. If none exists, the panel shows "No predictions yet."
-
-**To make live (if RLS blocks):**
-- Add a Postgres policy: `CREATE POLICY "Public can read predictions" ON predictions FOR SELECT USING (true);`
-- Or expose via a public Supabase function/view that returns aggregated counts only
-
-### Panel 3 — Fan Profile
-**What:** Classifies the player as Pessimist / Realist / Optimist by comparing their predicted Boro points vs Boro's actual points for completed fixtures.
-
-**Current state:** ✅ Live — fetches from `results` table (actual Boro points), reads `boroScores` from localStorage (predicted points for same fixtures), compares diff.
-
-**Thresholds (diff = predicted − actual):**
-- ☀️ **Optimist** — predicted ≥ 3 pts more than Boro got
-- 🔬 **Realist** — within 2 pts either way (including 0 matches played)
-- 🌧️ **Pessimist** — predicted ≥ 3 pts fewer than Boro got
-
-### Panel 4 — Bookies
+### Panel 2 — Bookies Probability
 **What:** Shows the implied probability of the player's own predicted scoreline based on betting market odds. Colour coded by chance: <5% Long Shot · 5–10% Possible · 10–15% Decent · 15%+ Strong.
 
-**Current state:** Shows player's saved prediction for fixture 0 (from localStorage). Probability shows "—" with "Odds API coming soon" chip. Colour classes already in CSS.
+**Current state:** Shows player's saved prediction for fixture 0 (from localStorage). Probability shows "—" with "API coming soon" label.
 
 **To make live:**
 - Integrate The Odds API (or API-Football odds endpoint)
@@ -93,7 +72,19 @@ Six panels on `analyst/index.html`. Gate modal on entry. Top 4 are dashboard-sty
 - Cache results (odds rarely change more than once/day)
 - Threshold colours: <5% → red `.prob-long` · 5–10% → amber `.prob-poss` · 10–15% → blue `.prob-decent` · 15%+ → green `.prob-strong`
 
-### Panel 5 — Season Achievement *(wide)*
+### Panel 3 — Fan Profile
+**What:** Classifies the player as Pessimist / Realist / Optimist based purely on their own predicted Boro season points total.
+
+**Current state:** ✅ Live — reads `boroScores` from localStorage, calculates predicted wins/draws/losses, determines profile.
+
+**Thresholds:**
+- 🌧️ **Pessimist** — <50 pts predicted
+- 🔬 **Realist** — 50–74 pts predicted
+- ☀️ **Optimist** — 75+ pts predicted
+
+**Future improvement:** Once actual results are in, compare predicted vs actual to refine the archetype (e.g. "Realist who correctly called 7 Boro wins").
+
+### Panel 4 — Season Achievement
 **What:** The player's rarest correct prediction — the scoreline they got right that the fewest other players also got right.
 
 **Current state:** Locked state shown (no blur). Preview example shown in greyed-out card.
@@ -104,13 +95,6 @@ Six panels on `analyst/index.html`. Gate modal on entry. Top 4 are dashboard-sty
 - For each correct prediction, count how many other players predicted the same scoreline
 - Surface the one with the lowest count (rarest)
 - Display: "Boro 3–1 Derby · Only 2 players called this · Your rarest call"
-
-### Panel 6 — Your Season *(wide)*
-**What:** Full-season summary from the player's localStorage predictions — predicted points total, W-D-L record, and season outcome tier.
-
-**Current state:** ✅ Live — reads `boroScores` from localStorage, calculates all-46-game record using `BORO_HOME` array, maps points to tier.
-
-**Tiers:** 100+ → Smash the League · 75+ → Promotion Challenge · 65+ → Play-off Push · 50+ → Mid-table · 40+ → Tough Season · &lt;40 → Relegation Battle
 
 ---
 
@@ -175,7 +159,7 @@ Earned badges displayed on the ladder (player chooses which to show if they hold
 
 | Badge | Trigger |
 |---|---|
-| **Founder** | Sign up for season 26/27 |
+| **Founder** | Sign up for season 25/26 |
 | **Strong Start** | Correct result in first game of the season
 | **Manager of the Month** | Win manager of the month award |
 | **Off the Mark** | Correct scoreline on any match |
@@ -189,6 +173,7 @@ Earned badges displayed on the ladder (player chooses which to show if they hold
 | **Relegated** | Finish 22nd, 23rd or 24th in the final table |
 | **Full House** | Correct scoreline on Boxing Day |
 | **Eye Spy** | Correct scoreline v Southampton |
+| **Loyal Supporter** | Upgrade to the Analyst Tier |
 
 
 *More to be added...*

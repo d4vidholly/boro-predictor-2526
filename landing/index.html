@@ -50,7 +50,7 @@
         <p class="form-note">No spam. We'll email you when places open up.</p>
         <p class="error-msg" id="error-msg" role="status" aria-live="polite"></p>
         <div class="success-msg" id="success-msg" role="status" aria-live="polite">
-          <strong>You're on the list ðŸŽ¯</strong>
+          <strong>You're on the list &#x1F3AF;</strong>
           We'll be in touch when places open up.
         </div>
       </div>
@@ -79,7 +79,7 @@
             <div class="mock-match">
               <span class="mock-team">Middlesbrough</span>
               <div class="mock-score-ctrl">
-                <div class="mock-btn">âˆ’</div>
+                <div class="mock-btn">&minus;</div>
                 <div class="mock-score">2</div>
                 <div class="mock-btn">+</div>
               </div>
@@ -87,12 +87,12 @@
             <div class="mock-match" style="margin-bottom:0.45rem">
               <span class="mock-team">Swansea City</span>
               <div class="mock-score-ctrl">
-                <div class="mock-btn">âˆ’</div>
+                <div class="mock-btn">&minus;</div>
                 <div class="mock-score">0</div>
                 <div class="mock-btn">+</div>
               </div>
             </div>
-            <span class="mock-win-tag">Predicted win âœ“</span>
+            <span class=”mock-win-tag”>Predicted win &#x2713;</span>
           </div>
         </div>
         <div class="step-body">
@@ -149,7 +149,7 @@
       <div class="step-card">
         <div class="step-visual" data-num="03">
           <div class="mock-prize">
-            <span class="prize-icon">ðŸ†</span>
+            <span class="prize-icon">&#x1F3C6;</span>
             <div class="prize-lbl">Season winner</div>
             <div class="prize-amt">Cash prize</div>
             <div class="prize-sub">Confirmed once all 24 spots are filled</div>
@@ -188,7 +188,7 @@
       <p class="form-note" style="color:rgba(255,255,255,0.28)">No spam. We'll email you when places open up.</p>
       <p class="error-msg" id="error-msg-2" style="margin-top:0.5rem" role="status" aria-live="polite"></p>
       <div class="success-msg" id="success-msg-2" style="margin-top:0.75rem" role="status" aria-live="polite">
-        <strong>You're on the list ðŸŽ¯</strong>
+        <strong>You're on the list &#x1F3AF;</strong>
         We'll be in touch when places open up.
       </div>
     </div>
@@ -262,7 +262,7 @@
         return;
       }
       btn.disabled = true;
-      btn.textContent = 'Sendingâ€¦';
+      btn.textContent = 'Sending…';
       if (errEl) errEl.style.display = 'none';
       try {
         await submitEmail(email);
@@ -274,7 +274,7 @@
         btn.disabled = false;
         btn.textContent = 'Register';
         if (errEl) {
-          errEl.textContent = 'Something went wrong â€” please try again.';
+          errEl.textContent = 'Something went wrong — please try again.';
           errEl.style.display = 'block';
         }
       }
