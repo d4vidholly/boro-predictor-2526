@@ -272,28 +272,35 @@
     return `
       <div class="predictor" id="match-${index}" data-month="${month}">
         <div class="result-tab" role="img"></div>
-        <div class="competition-label">EFL Championship</div>
-        <div class="matchday-title">Matchday ${index + 1}<div class="date">${fixture.date}</div></div>
-        <div class="team">
-          <img src="${homeBadge}" alt="${fixture.home} Badge">
-          <div class="team-info">
-            <div class="team-name">${shortName(fixture.home)}</div>
+        <div class="card-header">
+          <div class="card-header-left">
+            <span>EFL Championship</span>
+            <strong>Matchday ${index + 1}</strong>
           </div>
-          <div class="score-control">
-            <button class="change-score" onclick="changeScore(${index}, 'home', -1)" aria-label="Decrease ${shortName(fixture.home)} score">−</button>
-            <div id="home-score-${index}" class="score" aria-live="polite" aria-atomic="true">0</div>
-            <button class="change-score" onclick="changeScore(${index}, 'home', 1)" aria-label="Increase ${shortName(fixture.home)} score">+</button>
-          </div>
+          <span class="card-date">${fixture.date}</span>
         </div>
-        <div class="team">
-          <img src="${awayBadge}" alt="${fixture.away} Badge">
-          <div class="team-info">
-            <div class="team-name">${shortName(fixture.away)}</div>
+        <div class="card-body">
+          <div class="team">
+            <img src="${homeBadge}" alt="${fixture.home} Badge">
+            <div class="team-info">
+              <div class="team-name">${shortName(fixture.home)}</div>
+            </div>
+            <div class="score-control">
+              <button class="change-score" onclick="changeScore(${index}, 'home', -1)" aria-label="Decrease ${shortName(fixture.home)} score">−</button>
+              <div id="home-score-${index}" class="score" aria-live="polite" aria-atomic="true">0</div>
+              <button class="change-score" onclick="changeScore(${index}, 'home', 1)" aria-label="Increase ${shortName(fixture.home)} score">+</button>
+            </div>
           </div>
-          <div class="score-control">
-            <button class="change-score" onclick="changeScore(${index}, 'away', -1)" aria-label="Decrease ${shortName(fixture.away)} score">−</button>
-            <div id="away-score-${index}" class="score" aria-live="polite" aria-atomic="true">0</div>
-            <button class="change-score" onclick="changeScore(${index}, 'away', 1)" aria-label="Increase ${shortName(fixture.away)} score">+</button>
+          <div class="team">
+            <img src="${awayBadge}" alt="${fixture.away} Badge">
+            <div class="team-info">
+              <div class="team-name">${shortName(fixture.away)}</div>
+            </div>
+            <div class="score-control">
+              <button class="change-score" onclick="changeScore(${index}, 'away', -1)" aria-label="Decrease ${shortName(fixture.away)} score">−</button>
+              <div id="away-score-${index}" class="score" aria-live="polite" aria-atomic="true">0</div>
+              <button class="change-score" onclick="changeScore(${index}, 'away', 1)" aria-label="Increase ${shortName(fixture.away)} score">+</button>
+            </div>
           </div>
         </div>
       </div>
